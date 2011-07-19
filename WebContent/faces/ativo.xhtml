@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+	<p:messages showSummary="true" id="msgAtivo" />
+	<h:form>
+		<p:dataTable id="dataTable"
+			style="width:500px;text-align:center; align:center;;width:900px;"
+			value="#{ativoBean.listAtivo}" var="list" selectionMode="single"
+			selection="#{ativoBean.selected}"
+			paginator="true" rows="5"
+			emptyMessage="Nenhum registo encontrado">
+			
+			<f:facet name="header">  
+             	<h:outputText value="Ativo"/>  
+         	</f:facet>
+			
+			<p:column resizable="true" filterBy="#{list['ativo']}" sortBy="#{list['ativo']}">
+				<f:facet name="header">
+					<h:outputLabel value="Ativo" />
+				</f:facet>
+				<p:inputText id="nome" value="#{list['ativo']}" />
+				<p:watermark value="Novo Ativo" for="nome" />
+			</p:column>
+
+			<p:column resizable="true" sortBy="#{list['tipoAtivo']['name']}" filterBy="#{list['tipoAtivo']['name']}">
+				<f:facet name="header">
+					<h:outputLabel value="Tipo de Ativo" />
+				</f:facet>
+				<!--<p:inputText id="tipoAtivo" value="#{list['tipoAtivo']['name']}" />-->
+				<p:autoComplete forceSelection="true" value="#{list['tipoAtivo']['name']}"
+					completeMethod="#{ativoBean.completeTipoAtivo}" />
+			</p:column>
+
+
+			<p:column resizable="true" sortBy="#{list['funcionario']['nome']}" filterBy="#{list['funcionario']['nome']}">
+				<f:facet name="header">
+					<h:outputLabel value="Funcionário" />
+				</f:facet>
+				<!--<p:inputText id="funcionario" value="#{list['funcionario']['nome']}" />-->
+				<p:autoComplete forceSelection="true" value="#{list['funcionario']['nome']}"
+					completeMethod="#{ativoBean.completeFuncionario}" />
+			</p:column>
+
+
+
+			<p:column resizable="true" filterBy="#{list['dataModificacao']}">
+				<f:facet name="header">
+					<h:outputLabel value="Data de Modificação" />
+				</f:facet>
+				<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
+			</p:column>
+		</p:dataTable>
+		<p>
+			<p:commandButton value="Inserir" actionListener="#{ativoBean.add}"
+				 update="dataTable,msgAtivo" image="ui-icon ui-icon-disk" />
+	
+			<p:commandButton value="Atualizar" image="ui-icon ui-icon-pencil"
+				update="dataTable,msgAtivo" actionListener="#{ativoBean.update}"  />
+	
+			<p:commandButton value="Excluir" image="ui-icon ui-icon-trash"
+				update="dataTable,msgAtivo" actionListener="#{ativoBean.delete}" />
+
+		</p>
+	</h:form>
+
+</f:view>
+</html>

@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+	<f:view>
+	
+	<script type="text/javascript">  
+		var chartStyle = {  
+			padding:20,  
+			legend: {  
+				display:"right",  
+				spacing:10  
+			}  
+		};  
+	</script>
+			<h:form>
+				<p:panel header="Graficos">
+					<h:panelGrid columns="1">
+					
+					<f:facet name="header">
+						<h:outputText value="Funcionário x Setor"/>
+					</f:facet>
+						<p:pieChart value="#{graficosBean.dtoPizza}" 
+						var="pie" categoryField="#{pie.setor}"
+						dataField="#{pie.quantidade}" style="chartStyle"
+						live="true" refreshInterval="10000"/>
+						
+					</h:panelGrid>
+	
+				</p:panel>
+			</h:form>
+	</f:view>
+</html>

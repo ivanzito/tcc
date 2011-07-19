@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+	http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="tcc" transaction-type="RESOURCE_LOCAL">
+		<class>edu.fatec.zl.entity.TipoAtivo</class>
+		<class>edu.fatec.zl.entity.Login</class>
+		<class>edu.fatec.zl.entity.Funcionario</class>
+		<class>edu.fatec.zl.entity.Setor</class>
+		<class>edu.fatec.zl.entity.Ativo</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tcc?autoReconnect=true"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="caiman"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="eclipselink.jdbc.autoReconnect" value="true" />
+			<property name="eclipselink.logging.level" value="FINER"/>
+			
+			
+			
+			
+			<!-- 
+			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+			<property name="eclipselink.ddl-generation.output-mode" value="database" />
+			 -->
+			
+		</properties>
+	</persistence-unit>
+</persistence>

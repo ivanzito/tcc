@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+	<p:messages showSummary="true" id="msgTipoAtivo" />
+
+	<h:form>
+		<p:layoutUnit position="center">
+			<p:dataTable id="dataTable"
+				style="width:500px;text-align:center; align:center;width:900px;"
+				value="#{tipoAtivoBean.listTipoAtivo}" var="list" 
+				selectionMode="single" selection="#{tipoAtivoBean.selected}"
+				paginator="true" rows="5"
+				emptyMessage="Nenhum registo encontrado">
+				
+			<f:facet name="header">  
+             	<h:outputText value="Tipo de Ativo"/>  
+         	</f:facet>
+				
+				
+				<p:column filterBy="#{list['name']}" sortBy="#{list['name']}">
+					<f:facet name="header">
+						<h:outputLabel value="Ativo" />
+					</f:facet>
+					<p:inputText id="ativo" value="#{list['name']}" />
+					<p:watermark value="Novo Tipo de Ativo" for="ativo"/>
+				</p:column> 
+
+				<p:column filterBy="#{list['depreciacao']}" sortBy="#{list['depreciacao']}">
+					<f:facet name="header">
+						<h:outputLabel value="Depreciação" />
+					</f:facet>
+					<p:inputText value="#{list['depreciacao']}" />
+				</p:column>
+
+
+				<p:column filterBy="#{list['dataModificacao']}" sortBy="#{list['dataModificacao']}">
+					<f:facet name="header">
+						<h:outputLabel value="Data de Modificação" />
+					</f:facet>
+					<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
+				</p:column>
+			</p:dataTable>
+
+
+		<p>
+			<p:commandButton value="Inserir" actionListener="#{tipoAtivoBean.add}"
+				 update="dataTable,msgTipoAtivo" image="ui-icon ui-icon-disk" />
+	
+			<p:commandButton value="Atualizar" image="ui-icon ui-icon-pencil"
+				update="dataTable,msgTipoAtivo" actionListener="#{tipoAtivoBean.update}"  />
+	
+			<p:commandButton value="Excluir" image="ui-icon ui-icon-trash"
+				update="dataTable,msgTipoAtivo" actionListener="#{tipoAtivoBean.delete}" />
+		</p>
+		</p:layoutUnit>
+	</h:form>
+</f:view>
+</html>
