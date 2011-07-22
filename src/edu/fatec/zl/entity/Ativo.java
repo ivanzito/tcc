@@ -30,8 +30,8 @@ public class Ativo extends DataAccess<Ativo> implements Serializable {
 	
 	public Ativo(){
 		super();
-		//this.tipoAtivo = new TipoAtivo();
-		//this.funcionario = new Funcionario();
+		this.tipoAtivo = new TipoAtivo();
+		this.funcionario = new Funcionario();
 	}
 	/**
 	 * 
