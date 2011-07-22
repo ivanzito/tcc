@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 
@@ -30,9 +31,12 @@ public class TipoAtivoBean extends DataAccess<AtivoBean> implements Serializable
 	private TipoAtivo selected = new TipoAtivo();
 	private FacesContext ctx = faces.getFacesContext();
 	
+	@Inject
+	private TipoAtivo tipoAtivo;
+	
 	@PostConstruct
 	public void load(){
-		listTipoAtivo = new TipoAtivo().getTipoAtivoList();
+		listTipoAtivo = tipoAtivo.getTipoAtivoList();
 		listTipoAtivo.add(0,new TipoAtivo());
 	}
 	
@@ -73,7 +77,7 @@ public class TipoAtivoBean extends DataAccess<AtivoBean> implements Serializable
 		
 		try {
 			selected.delete();
-			listTipoAtivo = new TipoAtivo().getTipoAtivoList();
+			listTipoAtivo = tipoAtivo.getTipoAtivoList();
 			listTipoAtivo.add(0,new TipoAtivo());
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
@@ -96,6 +100,16 @@ public class TipoAtivoBean extends DataAccess<AtivoBean> implements Serializable
 	
 	public TipoAtivo getSelected(){
 		return selected;
+	}
+
+
+	public TipoAtivo getTipoAtivo() {
+		return tipoAtivo;
+	}
+
+
+	public void setTipoAtivo(TipoAtivo tipoAtivo) {
+		this.tipoAtivo = tipoAtivo;
 	}
 
 

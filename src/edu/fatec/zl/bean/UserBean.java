@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
 import org.apache.log4j.Logger;
@@ -27,12 +28,15 @@ public class UserBean{
 	
 	private Logger logger = Logger.getLogger(UserBean.class);
 
+	@Inject
+	private Login login;
+	
 	public String doLogin() {
 		FacesUtil faces = new FacesUtil();
 		FacesContext ctx = faces.getFacesContext();
 		String forward = "home";
 		
-		Login login = new Login();
+		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("usr", user);
 		map.put("pwd", password);
@@ -66,5 +70,12 @@ public class UserBean{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public Login getLogin() {
+		return login;
+	}
 
+	public void setLogin(Login login) {
+		this.login = login;
+	}
 }

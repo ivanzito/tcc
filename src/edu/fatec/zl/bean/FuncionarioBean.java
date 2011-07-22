@@ -11,6 +11,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Controller;
@@ -35,11 +36,17 @@ public class FuncionarioBean extends DataAccess<AtivoBean> implements Serializab
 	private Funcionario selected = null;
 	private FacesContext ctx = faces.getFacesContext();
 
+	
+	@Inject
+	private Funcionario funcionario;
+	
+	@Inject
+	private Setor setor;
 
 	@PostConstruct
 	public void load() {
-		listFuncionario = new Funcionario().getFuncionarioList();
-		setores = new Setor().getSetorList();
+		listFuncionario = funcionario.getFuncionarioList();
+		setores = setor.getSetorList();
 		listFuncionario.add(0, new Funcionario());
 	}
 
@@ -52,7 +59,7 @@ public class FuncionarioBean extends DataAccess<AtivoBean> implements Serializab
 			
 		Map<String,Object> parameters = new HashMap<String,Object>();
 		parameters.put("aux", selected.getSetor().getName());
-		Query query = new Setor().executeNamedQuery("setorPorNome", parameters);
+		Query query = setor.executeNamedQuery("setorPorNome", parameters);
 		Setor setor = (Setor) query.getSingleResult();
 
 		selected.setSetor(setor);
@@ -72,7 +79,7 @@ public class FuncionarioBean extends DataAccess<AtivoBean> implements Serializab
 		
 		Map<String,Object> parameters = new HashMap<String,Object>();
 		parameters.put("aux", selected.getSetor().getName());
-		Query query = new Setor().executeNamedQuery("setorPorNome", parameters);
+		Query query = setor.executeNamedQuery("setorPorNome", parameters);
 		
 
 		try {
@@ -91,7 +98,7 @@ public class FuncionarioBean extends DataAccess<AtivoBean> implements Serializab
 		
 		try {
 			selected.delete();
-			listFuncionario = new Funcionario().getFuncionarioList();
+			listFuncionario = funcionario.getFuncionarioList();
 			listFuncionario.add(0, new Funcionario());			
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
@@ -124,5 +131,21 @@ public class FuncionarioBean extends DataAccess<AtivoBean> implements Serializab
 
 	public Funcionario getSelected() {
 		return this.selected;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 }

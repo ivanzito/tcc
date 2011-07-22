@@ -11,9 +11,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.dao.DataAccess;
@@ -39,25 +39,25 @@ public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 	
 	private Ativo selected = null;
 	
-	@Autowired
-	private Funcionario func;
+	@Inject
+	private Ativo ativo;
 	
+	@Inject
+	private Funcionario funcionario;
 	
-
-	public Funcionario getFunc() {
-		return func;
-	}
-
-	public void setFunc(Funcionario func) {
-		this.func = func;
-	}
+	@Inject
+	private TipoAtivo tipoAtivo;
+	
+	@Inject
+	private Setor setor;
+	
 
 	@PostConstruct
 	public void load(){
 
-		listAtivo = new Ativo().getAtivoList();
-		listFuncionario = new Funcionario().getFuncionarioList();
-		listTipoAtivo = new TipoAtivo().getTipoAtivoList();
+		listAtivo = ativo.getAtivoList();
+		listFuncionario = funcionario.getFuncionarioList();
+		listTipoAtivo = tipoAtivo.getTipoAtivoList();
 		
 		listAtivo.add(0,new Ativo());
 	}
@@ -70,8 +70,6 @@ public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 		}
 		
 		try{
-			Funcionario funcionario = new Funcionario();
-			TipoAtivo tipoAtivo = new TipoAtivo();
 			
 			Map<String,Object> parameters = new HashMap<String,Object>();
 			parameters.put("aux", selected.getFuncionario().getNome());
@@ -80,7 +78,7 @@ public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 			
 			parameters.clear();
 			parameters.put("aux", selected.getTipoAtivo().getName());
-			query = new Setor().executeNamedQuery("tipoAtivoPorNome", parameters);
+			query = setor.executeNamedQuery("tipoAtivoPorNome", parameters);
 			tipoAtivo = (TipoAtivo) query.getSingleResult();			
 			
 			selected.setFuncionario(funcionario);
@@ -119,7 +117,7 @@ public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 			faces.getFacesContext().
 			addMessage(null, new FacesMessage(e.getMessage()));
 		}
-		listAtivo = new Ativo().getAtivoList();
+		listAtivo = ativo.getAtivoList();
 		listAtivo.add(0,new Ativo());
 	}
 	
@@ -163,5 +161,37 @@ public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 
 	public void setSelected(Ativo selected) {
 		this.selected = selected;
+	}
+
+	public Ativo getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Ativo ativo) {
+		this.ativo = ativo;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public TipoAtivo getTipoAtivo() {
+		return tipoAtivo;
+	}
+
+	public void setTipoAtivo(TipoAtivo tipoAtivo) {
+		this.tipoAtivo = tipoAtivo;
+	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 }

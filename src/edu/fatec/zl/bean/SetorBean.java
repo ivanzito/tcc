@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 
@@ -30,10 +31,12 @@ public class SetorBean extends DataAccess<AtivoBean> implements Serializable{
 	private FacesContext ctx = faces.getFacesContext();
 	private Date date = new Date();
 	
+	@Inject
+	private Setor setor;
 	
 	@PostConstruct
 	public void load(){
-		listSetor = new Setor().getSetorList();
+		listSetor = setor.getSetorList();
 		listSetor.add(0,new Setor());
 	}
 
@@ -72,7 +75,7 @@ public class SetorBean extends DataAccess<AtivoBean> implements Serializable{
 		
 		try {
 			selected.delete();
-			listSetor = new Setor().getSetorList();
+			listSetor = setor.getSetorList();
 			listSetor.add(0,new Setor());
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
@@ -103,5 +106,13 @@ public class SetorBean extends DataAccess<AtivoBean> implements Serializable{
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 }

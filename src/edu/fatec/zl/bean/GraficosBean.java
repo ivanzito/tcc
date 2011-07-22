@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Controller;
@@ -30,11 +31,23 @@ public class GraficosBean implements Serializable {
 	private List<GraficoPizzaDTO> funcionarioSetor = new LinkedList<GraficoPizzaDTO>();
 	private List<GraficoPizzaDTO> ativoTipoAtivo = new LinkedList<GraficoPizzaDTO>();
 	
+	@Inject
+	private Funcionario funcionario;
+	
+	@Inject
+	private Ativo ativo;
+	
+	@Inject
+	private TipoAtivo tipoAtivo;
+	
+	@Inject
+	private Setor setor;
+	
 	@PostConstruct
 	public void load(){
 		
-		Funcionario funcionario = new Funcionario();
-		List<Setor> listSetor = new Setor().getSetorList();
+		
+		List<Setor> listSetor = setor.getSetorList();
 		for(Setor set : listSetor){
 			Map<String,Object> parameters = new HashMap<String,Object>();
 			parameters.put("aux", set.getId());
@@ -44,8 +57,8 @@ public class GraficosBean implements Serializable {
 		}
 		
 		
-		Ativo ativo = new Ativo();
-		List<TipoAtivo> listTipoAtivo = new TipoAtivo().getTipoAtivoList();
+		
+		List<TipoAtivo> listTipoAtivo = tipoAtivo.getTipoAtivoList();
 		for(TipoAtivo tpAtivo : listTipoAtivo){
 			Map<String,Object> parameters = new HashMap<String,Object>();
 			parameters.put("aux", tpAtivo.getId());
@@ -69,5 +82,37 @@ public class GraficosBean implements Serializable {
 
 	public void setAtivoTipoAtivo(List<GraficoPizzaDTO> ativoTipoAtivo) {
 		this.ativoTipoAtivo = ativoTipoAtivo;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public Ativo getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Ativo ativo) {
+		this.ativo = ativo;
+	}
+
+	public TipoAtivo getTipoAtivo() {
+		return tipoAtivo;
+	}
+
+	public void setTipoAtivo(TipoAtivo tipoAtivo) {
+		this.tipoAtivo = tipoAtivo;
+	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 }
