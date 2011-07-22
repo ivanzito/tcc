@@ -15,10 +15,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
+import org.springframework.stereotype.Repository;
+
 import edu.fatec.zl.dao.DataAccess;
 
 @Entity
 @NamedQuery(name="tipoAtivoPorNome",query="SELECT ta FROM TipoAtivo ta WHERE ta.name =:aux")
+@Repository
 public class TipoAtivo extends DataAccess<TipoAtivo> implements Serializable {
 
 	/**

@@ -5,17 +5,17 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.NoResultException;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.entity.Login;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
-@RequestScoped
+@Controller
 public class UserBean{
 
 	/**

@@ -15,9 +15,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.stereotype.Repository;
+
 import edu.fatec.zl.dao.DataAccess;
 
 @Entity
+@Repository
 @NamedQuery(name="login",query="SELECT login FROM Login login WHERE login.usuario= :usr AND login.senha= :pwd")
 public class Login extends DataAccess<Login> implements Serializable {
 

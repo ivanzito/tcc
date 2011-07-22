@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.fatec.zl.dao.DataAccess;
 import edu.fatec.zl.entity.Ativo;
 import edu.fatec.zl.entity.Funcionario;
 import edu.fatec.zl.entity.Login;

@@ -8,24 +8,28 @@ public class GraficoPizzaDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long quantidade;
-	private String setor;
+	private Long value;
+	private String key;
 	
 	public GraficoPizzaDTO(Long quantidade,String setor){
-		this.quantidade = quantidade;
-		this.setor = setor;
+		this.value = quantidade;
+		this.key = setor;
 	}
-	
-	public Long getQuantidade() {
-		return quantidade;
+
+	public Long getValue() {
+		return value;
 	}
-	public void setQuantidade(Long quantidade) {
-		this.quantidade = quantidade;
+
+	public void setValue(Long value) {
+		this.value = value;
 	}
-	public String getSetor() {
-		return setor;
+
+	public String getKey() {
+		return key;
 	}
-	public void setSetor(String setor) {
-		this.setor = setor;
+
+	public void setKey(String key) {
+		this.key = key;
 	}
+
 }

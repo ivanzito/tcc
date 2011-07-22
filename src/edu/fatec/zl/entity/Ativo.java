@@ -11,22 +11,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
+import org.springframework.stereotype.Repository;
+
 import edu.fatec.zl.dao.DataAccess;
 
 @Entity
+@NamedQuery(name="ativoGraficoPizza",query="SELECT COUNT(a) FROM Ativo a WHERE a.tipoAtivo.id =:aux")
+@Repository
 public class Ativo extends DataAccess<Ativo> implements Serializable {
 
 	
 	public Ativo(){
 		super();
-		this.tipoAtivo = new TipoAtivo();
-		this.funcionario = new Funcionario();
+		//this.tipoAtivo = new TipoAtivo();
+		//this.funcionario = new Funcionario();
 	}
 	/**
 	 * 

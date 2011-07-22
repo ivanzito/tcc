@@ -19,12 +19,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
+import org.springframework.stereotype.Repository;
+
 import edu.fatec.zl.dao.DataAccess;
 
 @Entity
 @NamedQueries({
 	@NamedQuery(name="funcionarioPorNome",query="SELECT f FROM Funcionario f WHERE f.nome =:aux"),
 	@NamedQuery(name="funcionarioGraficoPizza",query="SELECT COUNT(f) FROM Funcionario f WHERE f.setor.id =:aux")})
+@Repository
 public class Funcionario extends DataAccess<Funcionario> implements Serializable {
 
 	public Funcionario(){

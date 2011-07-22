@@ -19,16 +19,26 @@
 	</script>
 			<h:form>
 				<p:panel header="Graficos">
-					<h:panelGrid columns="1">
 					
-					<f:facet name="header">
-						<h:outputText value="Funcionário x Setor"/>
-					</f:facet>
-						<p:pieChart value="#{graficosBean.dtoPizza}" 
-						var="pie" categoryField="#{pie.setor}"
-						dataField="#{pie.quantidade}" style="chartStyle"
-						live="true" refreshInterval="10000"/>
+					
+					<h:panelGrid columns="2">
+					
+						<h:column>
+								<h:outputLabel value="Funcinário x Setor"/>
+								<p:pieChart width="400px" value="#{graficosBean.funcionarioSetor}" 
+								var="pie" categoryField="#{pie.key}"
+								dataField="#{pie.value}" style="chartStyle"
+								live="true" refreshInterval="10000"/>
+						</h:column>
 						
+						<h:column>
+								<h:outputLabel value="Ativo x Tipo de Ativo"/>
+								<p:pieChart width="400px" value="#{graficosBean.ativoTipoAtivo}" 
+								var="pie" categoryField="#{pie.key}"
+								dataField="#{pie.value}" style="chartStyle"
+								live="true" refreshInterval="10000"/>
+
+						</h:column>
 					</h:panelGrid>
 	
 				</p:panel>

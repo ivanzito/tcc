@@ -3,6 +3,9 @@ package edu.fatec.zl.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public abstract class AbstractDataAccess {
 
 

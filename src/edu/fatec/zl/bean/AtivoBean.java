@@ -13,6 +13,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import edu.fatec.zl.dao.DataAccess;
 import edu.fatec.zl.entity.Ativo;
 import edu.fatec.zl.entity.Funcionario;
@@ -21,6 +24,7 @@ import edu.fatec.zl.entity.TipoAtivo;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
+@Controller
 public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 	
 	/**
@@ -34,7 +38,19 @@ public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
 	private FacesContext ctx = faces.getFacesContext();
 	
 	private Ativo selected = null;
+	
+	@Autowired
+	private Funcionario func;
+	
+	
 
+	public Funcionario getFunc() {
+		return func;
+	}
+
+	public void setFunc(Funcionario func) {
+		this.func = func;
+	}
 
 	@PostConstruct
 	public void load(){
