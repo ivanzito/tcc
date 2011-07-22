@@ -18,7 +18,6 @@ import javax.persistence.criteria.Root;
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.exceptions.DatabaseException;
 import org.eclipse.persistence.exceptions.JPQLException;
-import org.springframework.stereotype.Repository;
 
 /**
  * <b>Description</b> 
@@ -27,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * @author Ivan Rodrigues - E468735
  * @param <T>
  */
-@Repository
+
 public class DataAccess<T> extends AbstractDataAccess {
 	
 	private final Logger logger = Logger.getLogger(DataAccess.class);
