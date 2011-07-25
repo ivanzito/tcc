@@ -14,6 +14,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.dao.DataAccess;
@@ -25,7 +26,7 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class AtivoBean extends DataAccess<AtivoBean> implements Serializable{
+public class AtivoBean implements Serializable{
 	
 	/**
 	 * 

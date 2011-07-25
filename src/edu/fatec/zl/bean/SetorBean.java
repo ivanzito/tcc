@@ -13,13 +13,12 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 
-import edu.fatec.zl.dao.DataAccess;
 import edu.fatec.zl.entity.Setor;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class SetorBean extends DataAccess<AtivoBean> implements Serializable{
+public class SetorBean implements Serializable{
 
 	/**
 	 * 
