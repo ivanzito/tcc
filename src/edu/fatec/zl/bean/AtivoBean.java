@@ -14,10 +14,8 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Controller;
 
-import edu.fatec.zl.dao.DataAccess;
 import edu.fatec.zl.entity.Ativo;
 import edu.fatec.zl.entity.Funcionario;
 import edu.fatec.zl.entity.Setor;

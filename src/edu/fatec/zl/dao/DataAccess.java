@@ -9,15 +9,10 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.apache.log4j.Logger;
-import org.eclipse.persistence.exceptions.DatabaseException;
-import org.eclipse.persistence.exceptions.JPQLException;
 
 /**
  * <b>Description</b> 
@@ -28,8 +23,6 @@ import org.eclipse.persistence.exceptions.JPQLException;
  */
 
 public class DataAccess<T> extends AbstractDataAccess {
-	
-	private final Logger logger = Logger.getLogger(DataAccess.class);
 	
 	private EntityManager entityManager = null;
 	
@@ -50,38 +43,33 @@ public class DataAccess<T> extends AbstractDataAccess {
 	 */
 	public Query executeNamedQuery(String namedQuery, Map<String,Object> parameters){
 		
-		Query query = null;
+		Query query = entityManager.createNamedQuery(namedQuery);
 		
-		try{
-			query = entityManager.createNamedQuery(namedQuery);
+		Iterator<String> it = parameters.keySet().iterator();
+		while(it.hasNext()){
+			String key = it.next();
+			Object o = parameters.get(key);
 			
-			Iterator<String> it = parameters.keySet().iterator();
-			while(it.hasNext()){
-				String key = it.next();
-				Object o = parameters.get(key);
-				
-				if(o instanceof Long)
-					query.setParameter(key, (Long) o);
-				
-				if(o instanceof Integer)
-					query.setParameter(key, (Integer) o);
-				
-				if(o instanceof BigInteger)
-					query.setParameter(key, (BigInteger) o);
-				
-				if(o instanceof BigDecimal)
-					query.setParameter(key, (BigDecimal) o);
-				
-				if(o instanceof Date)
-					query.setParameter(key, (Date) o);
-				
-				if(o instanceof String)
-					query.setParameter(key,o);
-				
-			}
-		}catch(JPQLException e){
-			logger.error(e.getMessage());
+			if(o instanceof Long)
+				query.setParameter(key, (Long) o);
+			
+			if(o instanceof Integer)
+				query.setParameter(key, (Integer) o);
+			
+			if(o instanceof BigInteger)
+				query.setParameter(key, (BigInteger) o);
+			
+			if(o instanceof BigDecimal)
+				query.setParameter(key, (BigDecimal) o);
+			
+			if(o instanceof Date)
+				query.setParameter(key, (Date) o);
+			
+			if(o instanceof String)
+				query.setParameter(key,o);
+			
 		}
+
 		
 		return query;
 	}
@@ -94,21 +82,15 @@ public class DataAccess<T> extends AbstractDataAccess {
 	 */
 	public Query executeJPQL(String jpql,Map<String,String> parameters){
 
-		Query query = null;
-		
-		try{
-			query = entityManager.createQuery(jpql);
+		Query query = entityManager.createQuery(jpql);
 			
-			Iterator<String> it = parameters.keySet().iterator();
-			while(it.hasNext()){
-				String key = it.next();
-				String value = parameters.get(key);
-				query.setParameter(key, value);	
-			}
-		}catch(JPQLException e){
-			logger.error(e.getMessage());
+		Iterator<String> it = parameters.keySet().iterator();
+		while(it.hasNext()){
+			String key = it.next();
+			String value = parameters.get(key);
+			query.setParameter(key, value);	
 		}
-		
+
 		return query;
 	}
 	
@@ -119,16 +101,7 @@ public class DataAccess<T> extends AbstractDataAccess {
 	 * @return {@link Query}
 	 */
 	public Query executeJPQL(String jpql){
-
-		Query query = null;
-		
-		try{
-			 query = entityManager.createQuery(jpql);
-		}catch(JPQLException e){
-			logger.error(e.getMessage());
-		}
-		
-		return query;
+		return entityManager.createQuery(jpql);
 	}
 	
 	/**
@@ -170,25 +143,12 @@ public class DataAccess<T> extends AbstractDataAccess {
 	public void insert() throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
-		try {
-			if (!transaction.isActive()) 
-				entityManager.getTransaction().begin();
+		
+		if (!transaction.isActive()) 
+			entityManager.getTransaction().begin();
 			
-			entityManager.persist(this);
-			transaction.commit();
-		} catch(RollbackException e){
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;			
-		} catch (DatabaseException e) {
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;
-		} catch(Exception e){
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;			
-		}
+		entityManager.persist(this);
+		transaction.commit();
 	}
 
 	/**
@@ -197,28 +157,12 @@ public class DataAccess<T> extends AbstractDataAccess {
 	public void delete() throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
-		try {
-			if (!transaction.isActive()) 
-				entityManager.getTransaction().begin(); 
+		if (!transaction.isActive()) 
+			entityManager.getTransaction().begin(); 
 			
-			DataAccess<T> obj = entityManager.merge(this);
-			entityManager.remove(obj);
-			transaction.commit();
-		} catch (DatabaseException e) {
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;
-		}  catch(RollbackException e){
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;			
-		} catch(Exception e){
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;			
-		} finally{
-			
-		}
+		DataAccess<T> obj = entityManager.merge(this);
+		entityManager.remove(obj);
+		transaction.commit();
 	}
 
 	/**
@@ -228,25 +172,11 @@ public class DataAccess<T> extends AbstractDataAccess {
 	public void update() throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
-		try {
-			if (!transaction.isActive()) 
-				entityManager.getTransaction().begin();
-			
-			DataAccess<T> obj = entityManager.merge(this);
-			entityManager.merge(obj);
-			transaction.commit();
-		} catch(RollbackException e){
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;			
-		} catch (DatabaseException e) {
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;
-		} catch(Exception e){
-			logger.error(e.getMessage());
-			transaction.rollback();
-			throw e;			
-		}
+		if (!transaction.isActive()) 
+			entityManager.getTransaction().begin();
+		
+		DataAccess<T> obj = entityManager.merge(this);
+		entityManager.merge(obj);
+		transaction.commit(); 
 	}
 }
