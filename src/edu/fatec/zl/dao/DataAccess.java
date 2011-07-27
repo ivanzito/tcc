@@ -14,6 +14,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * <b>Description</b> 
  * Classe utilitaria que e usada para fazer as operacoes na
@@ -22,6 +24,7 @@ import javax.persistence.criteria.Root;
  * @param <T>
  */
 
+@Transactional
 public class DataAccess<T> extends AbstractDataAccess {
 	
 	private EntityManager entityManager = null;
@@ -140,6 +143,7 @@ public class DataAccess<T> extends AbstractDataAccess {
 	/**
 	 * Faz insert em um objeto passando-se a instancia dele
 	 */
+	@Transactional
 	public void insert() throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
@@ -154,6 +158,7 @@ public class DataAccess<T> extends AbstractDataAccess {
 	/**
 	 * Faz delete de um objeto passando-se a instancia dele
 	 */
+	@Transactional
 	public void delete() throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
@@ -169,6 +174,7 @@ public class DataAccess<T> extends AbstractDataAccess {
 	 * Faz update em um objeto passando-se a instancia dele
 	 * @param obj
 	 */
+	@Transactional
 	public void update() throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
