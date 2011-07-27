@@ -14,7 +14,7 @@ public class LoggingInterceptor {
 
 	Logger logger = Logger.getLogger(DataAccess.class);
 
-	@Pointcut("execution(public * edu.fatec.zl.dao.DataAccess.*(..))")
+	@Pointcut("execution(@org.springframework.transaction.annotation.Transactional * *(..) )")
 	public void transactionalMethod() {}
 
 	@AfterThrowing(pointcut="transactionalMethod()",throwing="ex")
