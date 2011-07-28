@@ -1,5 +1,6 @@
 package edu.fatec.zl.dao;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -8,12 +9,14 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -24,17 +27,47 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T>
  */
 
-@Transactional
-public class DataAccess<T> extends AbstractDataAccess {
+
+@Repository
+public class DataAccess<T> implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private EntityManager entityManager = null;
+	
+	public static final String PERSISTENCE_UNIT = "tcc";
+	
+	
+	/**
+	* Retorna um objeto do tipo EntityManager. Este e usado para fazer acesso
+	* aos dados.
+	*
+	* @return {@link EntityManager}
+	*/
+	public EntityManager getEntityManager() {
+		return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT).createEntityManager();
+	}
+
+	/**
+	* Retorna um objeto do tipo EntityManager. Este e usado para fazer acesso
+	* aos dados.
+	*
+	* @return {@link EntityManager}
+	* @param {@link String}
+	*/
+	public EntityManager getEntityManager(String persistenceUnit) {
+		return Persistence.createEntityManagerFactory(persistenceUnit).createEntityManager();
+	}
 	
 	/**
 	 * Construtor Default
 	 */
 	public DataAccess(){
 		super();
-		entityManager = super.getEntityManager(PERSISTENCE_UNIT);
+		entityManager = this.getEntityManager();
 	}
 	
 	
