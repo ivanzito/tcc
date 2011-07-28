@@ -13,23 +13,23 @@
 
 		<ui:define name="center">
 				<p:tabView effect="opacity">
-					<p:tab title="Ativo">
+					<p:tab title="#{bundle.tab_asset}">
 						<ui:include src="/faces/ativo.xhtml"/>
 					</p:tab>
 					
-					<p:tab title="Funcionário" >
+					<p:tab title="#{bundle.tab_employee}" >
 						<ui:include src="/faces/funcionario.xhtml"/>
 					</p:tab>
 					
-					<p:tab title="Setor" >
+					<p:tab title="#{bundle.tab_sector}" >
 						<ui:include src="/faces/setor.xhtml"/>
 					</p:tab>
 					
-					<p:tab title="Tipo de Ativo" >
+					<p:tab title="#{bundle.tab_asset_type}" >
 						<ui:include src="/faces/tipo_ativo.xhtml"/>
 					</p:tab>
 					
-					<p:tab title="Gráficos" >
+					<p:tab title="#{bundle.tab_charts}" >
 						<ui:include src="/faces/graficos.xhtml"/>
 					</p:tab>											
 				</p:tabView>

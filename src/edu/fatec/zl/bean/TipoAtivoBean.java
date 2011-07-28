@@ -79,7 +79,7 @@ public class TipoAtivoBean implements Serializable{
 			listTipoAtivo = tipoAtivo.getTipoAtivoList();
 			listTipoAtivo.add(0,new TipoAtivo());
 		} catch (Exception e) {
-			ctx.addMessage(null, new FacesMessage(e.getMessage()));
+			faces.getFacesContext().addMessage(null, new FacesMessage("Houve um erro ao excluir o registro, verifique se existe outro registro que depende deste registro"));
 		}
 	}
 

@@ -100,8 +100,7 @@ public class AtivoBean implements Serializable{
 		try {
 			selected.update();
 		}catch(Exception e){
-			faces.getFacesContext().
-			addMessage(null, new FacesMessage(e.getMessage()));			
+			faces.getFacesContext().addMessage(null, new FacesMessage(e.getMessage()));			
 		}
 	}
 
@@ -113,8 +112,7 @@ public class AtivoBean implements Serializable{
 		try{
 			selected.delete();
 		}catch(Exception e){
-			faces.getFacesContext().
-			addMessage(null, new FacesMessage(e.getMessage()));
+			faces.getFacesContext().addMessage(null, new FacesMessage("Houve um erro ao excluir o registro, verifique se existe outro registro que depende deste registro"));
 		}
 		listAtivo = ativo.getAtivoList();
 		listAtivo.add(0,new Ativo());

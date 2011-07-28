@@ -11,23 +11,23 @@
 			value="#{ativoBean.listAtivo}" var="list" selectionMode="single"
 			selection="#{ativoBean.selected}"
 			paginator="true" rows="5"
-			emptyMessage="Nenhum registo encontrado">
+			emptyMessage="#{bundle.no_records_found}">
 			
 			<f:facet name="header">  
-             	<h:outputText value="Ativo"/>  
+             	<h:outputText value="#{bundle.asset}"/>  
          	</f:facet>
 			
 			<p:column resizable="true" filterBy="#{list['ativo']}" sortBy="#{list['ativo']}">
 				<f:facet name="header">
-					<h:outputLabel value="Ativo" />
+					<h:outputLabel value="#{bundle.asset}" />
 				</f:facet>
 				<p:inputText id="nome" value="#{list['ativo']}" />
-				<p:watermark value="Novo Ativo" for="nome" />
+				<p:watermark value="#{bundle.new_asset}" for="nome" />
 			</p:column>
 
 			<p:column resizable="true" sortBy="#{list['tipoAtivo']['name']}" filterBy="#{list['tipoAtivo']['name']}">
 				<f:facet name="header">
-					<h:outputLabel value="Tipo de Ativo" />
+					<h:outputLabel value="#{bundle.asset_type}" />
 				</f:facet>
 				<!--<p:inputText id="tipoAtivo" value="#{list['tipoAtivo']['name']}" />-->
 				<p:autoComplete forceSelection="true" value="#{list['tipoAtivo']['name']}"
@@ -37,7 +37,7 @@
 
 			<p:column resizable="true" sortBy="#{list['funcionario']['nome']}" filterBy="#{list['funcionario']['nome']}">
 				<f:facet name="header">
-					<h:outputLabel value="Funcionário" />
+					<h:outputLabel value="#{bundle.employee}" />
 				</f:facet>
 				<!--<p:inputText id="funcionario" value="#{list['funcionario']['nome']}" />-->
 				<p:autoComplete forceSelection="true" value="#{list['funcionario']['nome']}"
@@ -48,19 +48,19 @@
 
 			<p:column resizable="true" filterBy="#{list['dataModificacao']}">
 				<f:facet name="header">
-					<h:outputLabel value="Data de Modificação" />
+					<h:outputLabel value="#{bundle.date_modified}" />
 				</f:facet>
 				<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
 			</p:column>
 		</p:dataTable>
 		<p>
-			<p:commandButton value="Inserir" actionListener="#{ativoBean.add}"
+			<p:commandButton value="#{bundle.insert}" actionListener="#{ativoBean.add}"
 				 update="dataTable,msgAtivo" image="ui-icon ui-icon-disk" />
 	
-			<p:commandButton value="Atualizar" image="ui-icon ui-icon-pencil"
+			<p:commandButton value="#{bundle.update}" image="ui-icon ui-icon-pencil"
 				update="dataTable,msgAtivo" actionListener="#{ativoBean.update}"  />
 	
-			<p:commandButton value="Excluir" image="ui-icon ui-icon-trash"
+			<p:commandButton value="#{bundle.delete}" image="ui-icon ui-icon-trash"
 				update="dataTable,msgAtivo" actionListener="#{ativoBean.delete}" />
 
 		</p>

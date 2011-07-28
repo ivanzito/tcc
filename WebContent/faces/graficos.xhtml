@@ -18,13 +18,13 @@
 		};  
 	</script>
 			<h:form>
-				<p:panel header="Graficos">
+				<p:panel header="#{bundle.charts}">
 					
 					
 					<h:panelGrid columns="2">
 					
 						<h:column>
-								<h:outputLabel value="Funcinário x Setor"/>
+								<h:outputLabel value="#{bundle.chart_left}"/>
 								<p:pieChart width="400px" value="#{graficosBean.funcionarioSetor}" 
 								var="pie" categoryField="#{pie.key}"
 								dataField="#{pie.value}" style="chartStyle"
@@ -32,7 +32,7 @@
 						</h:column>
 						
 						<h:column>
-								<h:outputLabel value="Ativo x Tipo de Ativo"/>
+								<h:outputLabel value="#{bundle.chart_right}"/>
 								<p:pieChart width="400px" value="#{graficosBean.ativoTipoAtivo}" 
 								var="pie" categoryField="#{pie.key}"
 								dataField="#{pie.value}" style="chartStyle"

@@ -13,24 +13,24 @@
 				value="#{tipoAtivoBean.listTipoAtivo}" var="list" 
 				selectionMode="single" selection="#{tipoAtivoBean.selected}"
 				paginator="true" rows="5"
-				emptyMessage="Nenhum registo encontrado">
+				emptyMessage="#{bundle.no_records_found}">
 				
 			<f:facet name="header">  
-             	<h:outputText value="Tipo de Ativo"/>  
+             	<h:outputText value="#{bundle.asset_type}"/>  
          	</f:facet>
 				
 				
 				<p:column filterBy="#{list['name']}" sortBy="#{list['name']}">
 					<f:facet name="header">
-						<h:outputLabel value="Ativo" />
+						<h:outputLabel value="#{bundle.asset_type}" />
 					</f:facet>
 					<p:inputText id="ativo" value="#{list['name']}" />
-					<p:watermark value="Novo Tipo de Ativo" for="ativo"/>
+					<p:watermark value="#{bundle.new_asset_type}" for="ativo"/>
 				</p:column> 
 
 				<p:column filterBy="#{list['depreciacao']}" sortBy="#{list['depreciacao']}">
 					<f:facet name="header">
-						<h:outputLabel value="Depreciação" />
+						<h:outputLabel value="#{bundle.depreciation}" />
 					</f:facet>
 					<p:inputText value="#{list['depreciacao']}" />
 				</p:column>
@@ -38,7 +38,7 @@
 
 				<p:column filterBy="#{list['dataModificacao']}" sortBy="#{list['dataModificacao']}">
 					<f:facet name="header">
-						<h:outputLabel value="Data de Modificação" />
+						<h:outputLabel value="#{bundle.date_modified}" />
 					</f:facet>
 					<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
 				</p:column>
@@ -46,13 +46,13 @@
 
 
 		<p>
-			<p:commandButton value="Inserir" actionListener="#{tipoAtivoBean.add}"
+			<p:commandButton value="#{bundle.insert}" actionListener="#{tipoAtivoBean.add}"
 				 update="dataTable,msgTipoAtivo" image="ui-icon ui-icon-disk" />
 	
-			<p:commandButton value="Atualizar" image="ui-icon ui-icon-pencil"
+			<p:commandButton value="#{bundle.update}" image="ui-icon ui-icon-pencil"
 				update="dataTable,msgTipoAtivo" actionListener="#{tipoAtivoBean.update}"  />
 	
-			<p:commandButton value="Excluir" image="ui-icon ui-icon-trash"
+			<p:commandButton value="#{bundle.delete}" image="ui-icon ui-icon-trash"
 				update="dataTable,msgTipoAtivo" actionListener="#{tipoAtivoBean.delete}" />
 		</p>
 		</p:layoutUnit>

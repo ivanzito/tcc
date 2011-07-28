@@ -11,15 +11,17 @@
 		<f:view>
 
 			<h:form>
-				<p:panel header="Login">
+				<p:panel header="#{bundle.login}">
 
 					<h:panelGrid columns="2">
-						<h:outputLabel value="Usuário" />
+						<h:outputLabel value="#{bundle.user}" />
 						<p:inputText value="#{userBean.user}" />
-						<h:outputLabel value="Senha" />
+						
+						<h:outputLabel value="#{bundle.password}" />
 						<p:password value="#{userBean.password}" feedback="false"/>
+						
 						<p:commandButton ajax="false" type="submit" value="Login" action="#{userBean.doLogin}" />
-						<p:button value="Novo Usuário" action="#{userBean.doLogin}" />
+						<p:button value="#{bundle.new_user}" action="#{userBean.doLogin}" />
 						
 					</h:panelGrid>
 

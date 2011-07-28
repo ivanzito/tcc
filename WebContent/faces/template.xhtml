@@ -9,7 +9,7 @@
 	<html>
 	
 	<h:head>	
-		<title><h:outputText value="Controle de Ativos" /></title>
+		<title><h:outputText value="#{bundle.title}" /></title>
 	</h:head>
 
 	<h:body>
@@ -22,6 +22,20 @@
      		</f:facet>
      	</p:ajaxStatus>
      	
+     	<div style="position:relative;left:90%;">
+     		<h:form>
+	     		<span>
+	     			<h:commandLink action="#{languageSwitcher.changeLanguage('en')}">
+	     				<h:graphicImage style="border:0px;" title="#{bundle.english}" value="../images/eua.jpg" />
+	     			</h:commandLink>
+	     		</span>
+	     		<span>
+	     			<h:commandLink action="#{languageSwitcher.changeLanguage('pt')}">
+	     				<h:graphicImage style="border:0px;" title="#{bundle.portuguese}" value="../images/brasil.jpg" />
+	     			</h:commandLink>
+	     		</span>
+     		</h:form>
+     	</div>
      	
 		<div style="width:1000px;position:relative;left:5%;right:10%">
 			<div id="top">

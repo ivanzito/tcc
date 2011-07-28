@@ -12,24 +12,24 @@
 				value="#{setorBean.listSetor}" var="list" selectionMode="single"
 				selection="#{setorBean.selected}"
 				paginator="true" rows="5"
-				emptyMessage="Nenhum registo encontrado">
+				emptyMessage="#{bundle.no_records_found}">
 				
 			<f:facet name="header">  
-             	<h:outputText value="Setor"/>  
+             	<h:outputText value="#{bundle.sector}"/>  
          	</f:facet>
 				
 				<p:column filterBy="#{list['name']}" sortBy="#{list['name']}">
 					<f:facet name="header">
-						<h:outputLabel value="Setor" />
+						<h:outputLabel value="#{bundle.sector}" />
 					</f:facet>
 					<p:inputText id="setor" value="#{list['name']}" />
-					<p:watermark value="Novo Setor" for="setor" />
+					<p:watermark value="#{bundle.new_sector}" for="setor" />
 				</p:column>
 
 
 				<p:column filterBy="#{list['dataModificacao']}" sortBy="#{list['dataModificacao']}">
 					<f:facet name="header">
-						<h:outputLabel value="Data de Modificação" />
+						<h:outputLabel value="#{bundle.date_modified}" />
 					</f:facet>
 					<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
 				</p:column>
@@ -37,13 +37,13 @@
 
 
 		<p>	
-			<p:commandButton value="Inserir" actionListener="#{setorBean.add}"
+			<p:commandButton value="#{bundle.insert}" actionListener="#{setorBean.add}"
 				 update="dataTable,msgSetor" image="ui-icon ui-icon-disk" />
 	
-			<p:commandButton value="Atualizar" image="ui-icon ui-icon-pencil"
+			<p:commandButton value="#{bundle.update}" image="ui-icon ui-icon-pencil"
 				update="dataTable,msgSetor" actionListener="#{setorBean.update}"  />
 	
-			<p:commandButton value="Excluir" image="ui-icon ui-icon-trash"
+			<p:commandButton value="#{bundle.delete}" image="ui-icon ui-icon-trash"
 				update="dataTable,msgSetor" actionListener="#{setorBean.delete}" />
 		</p>
 		</p:layoutUnit>
