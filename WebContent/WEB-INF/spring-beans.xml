@@ -21,6 +21,7 @@ http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
   	<context:component-scan base-package="edu.fatec.zl.dao" />
 	<context:component-scan base-package="edu.fatec.zl.bean" />
 	<context:component-scan base-package="edu.fatec.zl.aspect" />
+	<context:component-scan base-package="edu.fatec.zl.util" />
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="tcc" />
