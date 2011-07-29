@@ -23,24 +23,26 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class FuncionarioBean implements Serializable {
+public class FuncionarioBean extends AbstractBean implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private FacesUtil faces = new FacesUtil();
 	private List<Funcionario> listFuncionario = null;
 	private List<Setor> setores = null;
 	private Funcionario selected = null;
-	private FacesContext ctx = faces.getFacesContext();
-
+	
 	
 	@Inject
 	private Funcionario funcionario;
 	
 	@Inject
 	private Setor setor;
+	
+
 
 	@PostConstruct
 	public void load() {
@@ -51,8 +53,10 @@ public class FuncionarioBean implements Serializable {
 
 	public void add(ActionEvent evt) {
 		
+		FacesContext ctx = faces.getFacesContext();
+		
 		if(selected == null){
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
 			return;
 		}
 			
@@ -73,8 +77,12 @@ public class FuncionarioBean implements Serializable {
 
 	public void update(ActionEvent evt) {
 	
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		Map<String,Object> parameters = new HashMap<String,Object>();
 		parameters.put("aux", selected.getSetor().getName());
@@ -92,15 +100,19 @@ public class FuncionarioBean implements Serializable {
 
 	public void delete(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try {
 			selected.delete();
 			listFuncionario = funcionario.getFuncionarioList();
 			listFuncionario.add(0, new Funcionario());			
 		} catch (Exception e) {
-			faces.getFacesContext().addMessage(null, new FacesMessage("Houve um erro ao excluir o registro, verifique se existe outro registro que depende deste registro"));
+			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
 	}
 	public List<String> completeSetor(String query) {

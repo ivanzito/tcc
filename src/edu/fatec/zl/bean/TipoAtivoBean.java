@@ -18,17 +18,16 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class TipoAtivoBean implements Serializable{
+public class TipoAtivoBean extends AbstractBean implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	private List<TipoAtivo> listTipoAtivo = new LinkedList<TipoAtivo>();
 	private FacesUtil faces = new FacesUtil();
 	private TipoAtivo selected = new TipoAtivo();
-	private FacesContext ctx = faces.getFacesContext();
 	
 	@Inject
 	private TipoAtivo tipoAtivo;
@@ -42,8 +41,10 @@ public class TipoAtivoBean implements Serializable{
 
 	public void add(ActionEvent evt) {
 		
+		FacesContext ctx = faces.getFacesContext();
+		
 		if(selected == null){
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
 			return;
 		}
 		
@@ -59,8 +60,12 @@ public class TipoAtivoBean implements Serializable{
 
 	public void update(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try {
 			selected.update();
@@ -71,15 +76,19 @@ public class TipoAtivoBean implements Serializable{
 
 	public void delete(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try {
 			selected.delete();
 			listTipoAtivo = tipoAtivo.getTipoAtivoList();
 			listTipoAtivo.add(0,new TipoAtivo());
 		} catch (Exception e) {
-			faces.getFacesContext().addMessage(null, new FacesMessage("Houve um erro ao excluir o registro, verifique se existe outro registro que depende deste registro"));
+			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
 	}
 
@@ -110,6 +119,4 @@ public class TipoAtivoBean implements Serializable{
 	public void setTipoAtivo(TipoAtivo tipoAtivo) {
 		this.tipoAtivo = tipoAtivo;
 	}
-
-
 }

@@ -24,17 +24,18 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class AtivoBean implements Serializable{
+public class AtivoBean extends AbstractBean implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private FacesUtil faces = new FacesUtil();
 	private List<Ativo> listAtivo = null;
 	private List<Funcionario> listFuncionario = null;
 	private List<TipoAtivo> listTipoAtivo = null;
-	private FacesContext ctx = faces.getFacesContext();
+
 	
 	private Ativo selected = null;
 	
@@ -51,9 +52,9 @@ public class AtivoBean implements Serializable{
 	private Setor setor;
 	
 
+
 	@PostConstruct
 	public void load(){
-
 		listAtivo = ativo.getAtivoList();
 		listFuncionario = funcionario.getFuncionarioList();
 		listTipoAtivo = tipoAtivo.getTipoAtivoList();
@@ -63,8 +64,10 @@ public class AtivoBean implements Serializable{
 	
 	public void add(ActionEvent evt) {
 		
+		FacesContext ctx = faces.getFacesContext();
+		
 		if(selected == null){
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
 			return;
 		}
 		
@@ -94,8 +97,12 @@ public class AtivoBean implements Serializable{
 
 	public void update(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try {
 			selected.update();
@@ -106,13 +113,17 @@ public class AtivoBean implements Serializable{
 
 	public void delete(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try{
 			selected.delete();
 		}catch(Exception e){
-			faces.getFacesContext().addMessage(null, new FacesMessage("Houve um erro ao excluir o registro, verifique se existe outro registro que depende deste registro"));
+			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
 		listAtivo = ativo.getAtivoList();
 		listAtivo.add(0,new Ativo());

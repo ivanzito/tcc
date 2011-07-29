@@ -1,7 +1,6 @@
 package edu.fatec.zl.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,20 +17,22 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class SetorBean implements Serializable{
+public class SetorBean extends AbstractBean implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private List<Setor> listSetor = null;
 	private Setor selected = new Setor();
 	private FacesUtil faces = new FacesUtil();
-	private FacesContext ctx = faces.getFacesContext();
-	private Date date = new Date();
+
 	
 	@Inject
 	private Setor setor;
+	
+
 	
 	@PostConstruct
 	public void load(){
@@ -41,8 +42,10 @@ public class SetorBean implements Serializable{
 
 	public void add(ActionEvent evt) {
 		
+		FacesContext ctx = faces.getFacesContext();
+		
 		if(selected == null){
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
 			return;
 		}
 		
@@ -57,8 +60,12 @@ public class SetorBean implements Serializable{
 
 	public void update(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try {
 			selected.update();
@@ -69,15 +76,19 @@ public class SetorBean implements Serializable{
 
 	public void delete(ActionEvent evt) {
 		
-		if(selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+		FacesContext ctx = faces.getFacesContext();
+		
+		if(selected == null){
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+			return;
+		}
 		
 		try {
 			selected.delete();
 			listSetor = setor.getSetorList();
 			listSetor.add(0,new Setor());
 		} catch (Exception e) {
-			faces.getFacesContext().addMessage(null, new FacesMessage("Houve um erro ao excluir o registro, verifique se existe outro registro que depende deste registro"));
+			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
 	}
 
@@ -97,14 +108,6 @@ public class SetorBean implements Serializable{
 
 	public void setSelected(Setor selected) {
 		this.selected = selected;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public Setor getSetor() {
