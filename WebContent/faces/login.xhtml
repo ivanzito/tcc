@@ -20,14 +20,47 @@
 						<h:outputLabel value="#{bundle.password}" />
 						<p:password value="#{userBean.password}" feedback="false"/>
 						
-						<p:commandButton ajax="false" type="submit" value="Login" action="#{userBean.doLogin}" />
-						<p:button value="#{bundle.new_user}" action="#{userBean.doLogin}" />
-						
+						<p:commandButton ajax="false" type="submit" value="#{bundle.login}" action="#{userBean.doLogin}" />
+						<p:commandButton type="button" value="#{bundle.new_user}" onclick="dlg.show();" />
 					</h:panelGrid>
-
 				</p:panel>
 			</h:form>
 			<p:messages showSummary="true" id="msg" />
+			
+			<p:dialog header="#{bundle.login_create_account}" 
+		 		widgetVar="dlg" 
+		 		showEffect="bounce" 
+		 		hideEffect="explode" 
+		 		height="300"
+		 		width="400"
+		 		modal="true">
+		 			<h:form> 
+	 			 
+				 		<h:panelGrid columns="2">
+				 		
+				 			<h:outputLabel value="#{bundle.login_name}" />
+				 			<p:inputText id="name" value="#{userBean.name}"/>
+				 		
+							<h:outputLabel value="#{bundle.user}" />
+							<p:inputText id="user" value="#{userBean.user}" />
+					
+							<h:outputLabel value="#{bundle.password}" />
+							<p:password id="pwd" value="#{userBean.password}"/>
+																	
+							<h:outputLabel value="#{bundle.login_setor}" />
+							<h:selectOneMenu value="#{userBean.setorSelected}">
+								<f:selectItems value="#{userBean.selectSetor}"/>
+							</h:selectOneMenu>								
+							
+							<p:commandButton value="#{bundle.login_create_account}" 
+							actionListener="#{userBean.register}" update="msgNewUser"/>
+							
+						</h:panelGrid>
+						
+						<p:messages showSummary="true" id="msgNewUser" />
+					</h:form>
+		 		</p:dialog>
+			
 		</f:view>
 	</ui:define>
 
