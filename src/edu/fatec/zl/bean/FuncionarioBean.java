@@ -1,6 +1,5 @@
 package edu.fatec.zl.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,16 +22,16 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class FuncionarioBean extends AbstractBean implements Serializable {
+public class FuncionarioBean extends AbstractBean {
 
+
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	private FacesUtil faces = new FacesUtil();
 	private List<Funcionario> listFuncionario = null;
-	private List<Setor> setores = null;
 	private Funcionario selected = null;
 	
 	
@@ -47,7 +46,6 @@ public class FuncionarioBean extends AbstractBean implements Serializable {
 	@PostConstruct
 	public void load() {
 		listFuncionario = funcionario.getFuncionarioList();
-		setores = setor.getSetorList();
 		listFuncionario.add(0, new Funcionario());
 	}
 
@@ -69,34 +67,33 @@ public class FuncionarioBean extends AbstractBean implements Serializable {
 		try {
 			selected.insert();
 			listFuncionario = selected.getFuncionarioList();
-			listFuncionario.add(0, new Funcionario());			
+			listFuncionario.add(0, new Funcionario());
+			
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
 		}
 	}
 
 	public void update(ActionEvent evt) {
-	
+
 		FacesContext ctx = faces.getFacesContext();
 		
-		if(selected == null){
-			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
-			return;
-		}
-		
-		Map<String,Object> parameters = new HashMap<String,Object>();
+		if (selected == null)
+			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
+
+		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("aux", selected.getSetor().getName());
 		Query query = setor.executeNamedQuery("setorPorNome", parameters);
-		
 
 		try {
 			Setor setor = (Setor) query.getSingleResult();
-			selected.getSetor().setId(setor.getId());
+			selected.setSetor(setor);
 			selected.update();
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
 		}
 	}
+
 
 	public void delete(ActionEvent evt) {
 		
@@ -110,17 +107,21 @@ public class FuncionarioBean extends AbstractBean implements Serializable {
 		try {
 			selected.delete();
 			listFuncionario = funcionario.getFuncionarioList();
-			listFuncionario.add(0, new Funcionario());			
+			listFuncionario.add(0, new Funcionario());
+			
 		} catch (Exception e) {
 			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
 	}
+
+	
 	public List<String> completeSetor(String query) {
 		List<String> results = new ArrayList<String>();
 
-		for (Setor setor : setores) {
-			if (setor.getName().startsWith(query))
-				results.add(setor.getName());
+		
+		for (Setor set : setor.getSetorList()) {
+			if (set.getName().startsWith(query))
+				results.add(set.getName());
 		}
 
 		return results;

@@ -1,6 +1,5 @@
 package edu.fatec.zl.bean;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class TipoAtivoBean extends AbstractBean implements Serializable{
+public class TipoAtivoBean extends AbstractBean {
 
 	/**
 	 * 
@@ -27,7 +26,7 @@ public class TipoAtivoBean extends AbstractBean implements Serializable{
 	
 	private List<TipoAtivo> listTipoAtivo = new LinkedList<TipoAtivo>();
 	private FacesUtil faces = new FacesUtil();
-	private TipoAtivo selected = new TipoAtivo();
+	private TipoAtivo selected = null;
 	
 	@Inject
 	private TipoAtivo tipoAtivo;

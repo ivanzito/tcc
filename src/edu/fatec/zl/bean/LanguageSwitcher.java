@@ -6,8 +6,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
-public class LanguageSwitcher {
+public class LanguageSwitcher extends AbstractBean {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
 
 	public Locale getLocale() {

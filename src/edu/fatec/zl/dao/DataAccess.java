@@ -1,6 +1,5 @@
 package edu.fatec.zl.dao;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -29,12 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
-public class DataAccess<T> implements Serializable {
+public class DataAccess<T> {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	private EntityManager entityManager = null;
 	

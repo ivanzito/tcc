@@ -9,7 +9,7 @@ public class TransactionSpringTest {
 
 	@Test
 	public void test() {
-		String file = "file:C:/Users/irodrigues/git/tcc/WebContent/WEB-INF/spring-beans.xml";
+		String file = "file:C:/Users/Ivan/git/tcc/WebContent/WEB-INF/spring-beans.xml";
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(file);
 		Ativo ativo = (Ativo) context.getBean("ativo");
 		ativo = ativo.getEntityManager().find(Ativo.class, 1l);

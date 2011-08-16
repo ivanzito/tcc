@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class Funcionario extends DataAccess<Funcionario> implements Serializable
 	@Column(nullable=false)
 	private String nome;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(nullable=false)
 	private Setor setor;
 	

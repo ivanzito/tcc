@@ -27,16 +27,14 @@
 								<h:outputLabel value="#{bundle.chart_left}"/>
 								<p:pieChart width="400px" value="#{graficosBean.funcionarioSetor}" 
 								var="pie" categoryField="#{pie.key}"
-								dataField="#{pie.value}" style="chartStyle"
-								live="true" refreshInterval="10000"/>
+								dataField="#{pie.value}" style="chartStyle"/>
 						</h:column>
 						
 						<h:column>
 								<h:outputLabel value="#{bundle.chart_right}"/>
 								<p:pieChart width="400px" value="#{graficosBean.ativoTipoAtivo}" 
 								var="pie" categoryField="#{pie.key}"
-								dataField="#{pie.value}" style="chartStyle"
-								live="true" refreshInterval="10000"/>
+								dataField="#{pie.value}" style="chartStyle"/>
 
 						</h:column>
 					</h:panelGrid>

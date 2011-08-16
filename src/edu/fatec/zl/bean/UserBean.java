@@ -1,6 +1,5 @@
 package edu.fatec.zl.bean;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,7 +26,7 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class UserBean extends AbstractBean implements Serializable{
+public class UserBean extends AbstractBean {
 
 	/**
 	 * 
@@ -38,7 +37,7 @@ public class UserBean extends AbstractBean implements Serializable{
 	private String password;
 	private String name;
 	
-	private List<SelectItem> selectSetor;
+	private List<SelectItem> selectSetor =  new LinkedList<SelectItem>();
 	private Long setorSelected;
 	private FacesUtil faces = new FacesUtil();
 	
@@ -57,7 +56,6 @@ public class UserBean extends AbstractBean implements Serializable{
 	
 	@PostConstruct
 	public void load(){
-		selectSetor = new LinkedList<SelectItem>();
 		List<Setor>list = setor.getSetorList();
 		for(Setor set : list)
 			selectSetor.add(new SelectItem(set.getId(),set.getName()));
@@ -65,7 +63,6 @@ public class UserBean extends AbstractBean implements Serializable{
 	
 	
 	public String doLogin() {
-		
 		FacesUtil faces = new FacesUtil();
 		FacesContext ctx = faces.getFacesContext();
 		String forward = "home";
@@ -161,6 +158,11 @@ public class UserBean extends AbstractBean implements Serializable{
 	}
 
 	public List<SelectItem> getSelectSetor() {
+		selectSetor = new LinkedList<SelectItem>();
+		List<Setor>list = setor.getSetorList();
+		for(Setor set : list)
+			selectSetor.add(new SelectItem(set.getId(),set.getName()));
+	
 		return selectSetor;
 	}
 

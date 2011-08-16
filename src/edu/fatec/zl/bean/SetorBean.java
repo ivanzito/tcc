@@ -1,6 +1,5 @@
 package edu.fatec.zl.bean;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +16,7 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class SetorBean extends AbstractBean implements Serializable{
+public class SetorBean extends AbstractBean {
 
 	/**
 	 * 
@@ -25,7 +24,7 @@ public class SetorBean extends AbstractBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private List<Setor> listSetor = null;
-	private Setor selected = new Setor();
+	private Setor selected = null;
 	private FacesUtil faces = new FacesUtil();
 
 	
@@ -37,6 +36,7 @@ public class SetorBean extends AbstractBean implements Serializable{
 	@PostConstruct
 	public void load(){
 		listSetor = setor.getSetorList();
+		
 		listSetor.add(0,new Setor());
 	}
 

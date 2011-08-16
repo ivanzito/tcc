@@ -1,6 +1,5 @@
 package edu.fatec.zl.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,17 +23,15 @@ import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class AtivoBean extends AbstractBean implements Serializable{
+public class AtivoBean extends AbstractBean {
+	
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	private FacesUtil faces = new FacesUtil();
 	private List<Ativo> listAtivo = null;
-	private List<Funcionario> listFuncionario = null;
-	private List<TipoAtivo> listTipoAtivo = null;
 
 	
 	private Ativo selected = null;
@@ -56,9 +53,6 @@ public class AtivoBean extends AbstractBean implements Serializable{
 	@PostConstruct
 	public void load(){
 		listAtivo = ativo.getAtivoList();
-		listFuncionario = funcionario.getFuncionarioList();
-		listTipoAtivo = tipoAtivo.getTipoAtivoList();
-		
 		listAtivo.add(0,new Ativo());
 	}
 	
@@ -89,6 +83,7 @@ public class AtivoBean extends AbstractBean implements Serializable{
 			
 			listAtivo = selected.getAtivoList();
 			listAtivo.add(0,new Ativo());
+			
 		} catch(Exception e){
 			faces.getFacesContext().
 			addMessage(null, new FacesMessage(e.getMessage()));
@@ -133,9 +128,9 @@ public class AtivoBean extends AbstractBean implements Serializable{
 	public List<String> completeTipoAtivo(String query) {
 		List<String> results = new ArrayList<String>();
 
-		for (TipoAtivo tipoAtivo : listTipoAtivo) {
-			if (tipoAtivo.getName().startsWith(query))
-				results.add(tipoAtivo.getName());
+		for (TipoAtivo tpAtivo : tipoAtivo.getTipoAtivoList()) {
+			if (tpAtivo.getName().startsWith(query))
+				results.add(tpAtivo.getName());
 		}
 
 		return results;
@@ -145,9 +140,9 @@ public class AtivoBean extends AbstractBean implements Serializable{
 	public List<String> completeFuncionario(String query) {
 		List<String> results = new ArrayList<String>();
 
-		for (Funcionario funcionario : listFuncionario) {
-			if (funcionario.getNome().startsWith(query))
-				results.add(funcionario.getNome());
+		for (Funcionario func : funcionario.getFuncionarioList()) {
+			if (func.getNome().startsWith(query))
+				results.add(func.getNome());
 		}
 
 		return results;

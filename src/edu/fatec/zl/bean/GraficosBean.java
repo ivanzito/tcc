@@ -1,6 +1,5 @@
 package edu.fatec.zl.bean;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,13 +20,13 @@ import edu.fatec.zl.entity.TipoAtivo;
 
 @ManagedBean
 @Controller
-public class GraficosBean implements Serializable {
+public class GraficosBean extends AbstractBean {
+	
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	private List<GraficoPizzaDTO> funcionarioSetor = new LinkedList<GraficoPizzaDTO>();
 	private List<GraficoPizzaDTO> ativoTipoAtivo = new LinkedList<GraficoPizzaDTO>();
 	
@@ -45,7 +44,6 @@ public class GraficosBean implements Serializable {
 	
 	@PostConstruct
 	public void load(){
-		
 		
 		List<Setor> listSetor = setor.getSetorList();
 		for(Setor set : listSetor){

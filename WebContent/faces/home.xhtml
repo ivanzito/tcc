@@ -12,7 +12,7 @@
 		</ui:define>
 
 		<ui:define name="center">
-				<p:tabView effect="opacity">
+				<p:tabView id="tabView" effect="opacity">
 					<p:tab title="#{bundle.tab_asset}">
 						<ui:include src="/faces/ativo.xhtml"/>
 					</p:tab>
@@ -29,9 +29,11 @@
 						<ui:include src="/faces/tipo_ativo.xhtml"/>
 					</p:tab>
 					
+					<!-- 
 					<p:tab title="#{bundle.tab_charts}" >
 						<ui:include src="/faces/graficos.xhtml"/>
-					</p:tab>											
+					</p:tab>
+					 -->											
 				</p:tabView>
 		</ui:define>
 
