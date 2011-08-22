@@ -2,7 +2,6 @@ package edu.fatec.zl.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,16 +12,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
-
-import edu.fatec.zl.dao.DataAccess;
 
 @Entity
 @NamedQuery(name="setorPorNome",query="SELECT s FROM Setor s WHERE s.name =:aux")
 @Repository
-public class Setor extends DataAccess<Setor> implements Serializable {
+public class Setor implements Serializable,Persistable {
 
 	/**
 	 * 
@@ -34,23 +30,11 @@ public class Setor extends DataAccess<Setor> implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SQ")
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column(nullable=false,unique=true)
 	private String name;
 		
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataModificacao;
-	
-	public List<Setor> getSetorList(){
-		
-		TypedQuery<Setor> tqTpAtivo = null;
-		List<Setor> listTpAtivo = null;
-		tqTpAtivo = new Setor().executeCriteria(Setor.class);
-		
-		if(tqTpAtivo.getMaxResults() > 0)
-			listTpAtivo = tqTpAtivo.getResultList();
-		
-		return listTpAtivo;
-	}
 	
 	public Long getId() {
 		return id;

@@ -13,11 +13,12 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.entity.TipoAtivo;
+import edu.fatec.zl.service.TipoAtivoService;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class TipoAtivoBean extends AbstractBean {
+public class TipoAtivoBean extends GenericBean {
 
 	/**
 	 * 
@@ -29,11 +30,11 @@ public class TipoAtivoBean extends AbstractBean {
 	private TipoAtivo selected = null;
 	
 	@Inject
-	private TipoAtivo tipoAtivo;
+	private TipoAtivoService tipoAtivoService;
 	
 	@PostConstruct
 	public void load(){
-		listTipoAtivo = tipoAtivo.getTipoAtivoList();
+		listTipoAtivo = tipoAtivoService.getAll();
 		listTipoAtivo.add(0,new TipoAtivo());
 	}
 	
@@ -48,8 +49,8 @@ public class TipoAtivoBean extends AbstractBean {
 		}
 		
 		try {
-			selected.insert();
-			this.listTipoAtivo = selected.getTipoAtivoList();
+			tipoAtivoService.persist(selected);
+			this.listTipoAtivo = tipoAtivoService.getAll();
 			this.listTipoAtivo.add(0,new TipoAtivo());
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
@@ -67,7 +68,7 @@ public class TipoAtivoBean extends AbstractBean {
 		}
 		
 		try {
-			selected.update();
+			tipoAtivoService.merge(selected);
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
 		}
@@ -83,8 +84,8 @@ public class TipoAtivoBean extends AbstractBean {
 		}
 		
 		try {
-			selected.delete();
-			listTipoAtivo = tipoAtivo.getTipoAtivoList();
+			tipoAtivoService.remove(selected);
+			listTipoAtivo = tipoAtivoService.getAll();
 			listTipoAtivo.add(0,new TipoAtivo());
 		} catch (Exception e) {
 			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
@@ -110,12 +111,12 @@ public class TipoAtivoBean extends AbstractBean {
 	}
 
 
-	public TipoAtivo getTipoAtivo() {
-		return tipoAtivo;
+	public TipoAtivoService getTipoAtivoService() {
+		return tipoAtivoService;
 	}
 
 
-	public void setTipoAtivo(TipoAtivo tipoAtivo) {
-		this.tipoAtivo = tipoAtivo;
+	public void setTipoAtivoService(TipoAtivoService tipoAtivoService) {
+		this.tipoAtivoService = tipoAtivoService;
 	}
 }

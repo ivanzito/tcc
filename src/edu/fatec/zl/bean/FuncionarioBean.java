@@ -1,9 +1,8 @@
 package edu.fatec.zl.bean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,42 +10,41 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.entity.Funcionario;
 import edu.fatec.zl.entity.Setor;
+import edu.fatec.zl.service.FuncionarioService;
+import edu.fatec.zl.service.SetorService;
 import edu.fatec.zl.util.FacesUtil;
 
 
 @ManagedBean
 @Controller
-public class FuncionarioBean extends AbstractBean {
+public class FuncionarioBean extends GenericBean {
 
-
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private FacesUtil faces = new FacesUtil();
-	private List<Funcionario> listFuncionario = null;
-	private Funcionario selected = null;
+	private List<Object[]> listFuncionario = null;
+	private Object[] selected = null;
 	
+
+	@Inject
+	private FuncionarioService funcionarioService;
 	
 	@Inject
-	private Funcionario funcionario;
-	
-	@Inject
-	private Setor setor;
+	private SetorService setorService;
 	
 
 
 	@PostConstruct
 	public void load() {
-		listFuncionario = funcionario.getFuncionarioList();
-		listFuncionario.add(0, new Funcionario());
+		listFuncionario = funcionarioService.getFuncionarios();
+		listFuncionario.add(0, new Object[4]);
 	}
 
 	public void add(ActionEvent evt) {
@@ -57,38 +55,38 @@ public class FuncionarioBean extends AbstractBean {
 			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
 			return;
 		}
-			
-		Map<String,Object> parameters = new HashMap<String,Object>();
-		parameters.put("aux", selected.getSetor().getName());
-		Query query = setor.executeNamedQuery("setorPorNome", parameters);
-		Setor setor = (Setor) query.getSingleResult();
 
-		selected.setSetor(setor);
+		Funcionario funcionario = new Funcionario();
+		funcionario.setNome(selected[0].toString());
+		funcionario.setSetor(setorService.getSetorByName(selected[1].toString()));
+		funcionario.setDataModificacao((Date)selected[2]);
+
 		try {
-			selected.insert();
-			listFuncionario = selected.getFuncionarioList();
-			listFuncionario.add(0, new Funcionario());
+			funcionarioService.persist(funcionario);
+			listFuncionario = funcionarioService.getFuncionarios();
+			listFuncionario.add(0, new Object[4]);
 			
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
 		}
 	}
 
+	
 	public void update(ActionEvent evt) {
+		
 
 		FacesContext ctx = faces.getFacesContext();
 		
 		if (selected == null)
-			ctx.addMessage(null, new FacesMessage("Selecione uma linha."));
-
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("aux", selected.getSetor().getName());
-		Query query = setor.executeNamedQuery("setorPorNome", parameters);
+			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("select_row")));
+		
+		Funcionario funcionario = funcionarioService.getFuncionario(Long.parseLong(selected[3].toString()));
+		funcionario.setNome(selected[0].toString());
+		funcionario.setSetor(setorService.getSetorByName(selected[1].toString()));
+		funcionario.setDataModificacao((Date)selected[2]);
 
 		try {
-			Setor setor = (Setor) query.getSingleResult();
-			selected.setSetor(setor);
-			selected.update();
+			funcionarioService.merge(funcionario);
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
 		}
@@ -104,22 +102,24 @@ public class FuncionarioBean extends AbstractBean {
 			return;
 		}
 		
+		Funcionario funcionario = funcionarioService.getFuncionario(Long.parseLong(selected[3].toString()));
+		
 		try {
-			selected.delete();
-			listFuncionario = funcionario.getFuncionarioList();
-			listFuncionario.add(0, new Funcionario());
+			funcionarioService.remove(funcionario);
+			listFuncionario = funcionarioService.getFuncionarios();
+			listFuncionario.add(0, new String[4]);
 			
 		} catch (Exception e) {
 			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
 	}
-
+	
 	
 	public List<String> completeSetor(String query) {
 		List<String> results = new ArrayList<String>();
 
 		
-		for (Setor set : setor.getSetorList()) {
+		for (Setor set : setorService.getAll()) {
 			if (set.getName().startsWith(query))
 				results.add(set.getName());
 		}
@@ -129,35 +129,35 @@ public class FuncionarioBean extends AbstractBean {
 
 	// GETTERS AND SETTERS
 
-	public List<Funcionario> getListFuncionario() {
+	public List<Object[]> getListFuncionario() {
 		return listFuncionario;
 	}
 
-	public void setListFuncionario(List<Funcionario> listFuncionario) {
+	public void setListFuncionario(List<Object[]> listFuncionario) {
 		this.listFuncionario = listFuncionario;
 	}
 
-	public void setSelected(Funcionario selected) {
+	public void setSelected(Object[] selected) {
 		this.selected = selected;
 	}
 
-	public Funcionario getSelected() {
+	public Object[] getSelected() {
 		return this.selected;
 	}
 
-	public Funcionario getFuncionario() {
-		return funcionario;
+	public FuncionarioService getFuncionarioService() {
+		return funcionarioService;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
+	public void setFuncionarioService(FuncionarioService funcionarioService) {
+		this.funcionarioService = funcionarioService;
 	}
 
-	public Setor getSetor() {
-		return setor;
+	public SetorService getSetorService() {
+		return setorService;
 	}
 
-	public void setSetor(Setor setor) {
-		this.setor = setor;
+	public void setSetorService(SetorService setorService) {
+		this.setorService = setorService;
 	}
 }

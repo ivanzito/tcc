@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -15,7 +16,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Ivan Rodrigues - E468735
  * @param <T>
  */
-
-
-@Repository
-public class DataAccess<T> {
+public class GenericDao<T> {
 	
 	
 	private EntityManager entityManager = null;
@@ -60,7 +57,7 @@ public class DataAccess<T> {
 	/**
 	 * Construtor Default
 	 */
-	public DataAccess(){
+	public GenericDao(){
 		super();
 		entityManager = this.getEntityManager();
 	}
@@ -105,35 +102,7 @@ public class DataAccess<T> {
 		return query;
 	}
 	
-	/**
-	 * Executa uma Query passando os seus parametros.
-	 * @param namedQuery {@link Map}
-	 * @param parameters {@link String}
-	 * @return {@link Query}
-	 */
-	public Query executeJPQL(String jpql,Map<String,String> parameters){
-
-		Query query = entityManager.createQuery(jpql);
-			
-		Iterator<String> it = parameters.keySet().iterator();
-		while(it.hasNext()){
-			String key = it.next();
-			String value = parameters.get(key);
-			query.setParameter(key, value);	
-		}
-
-		return query;
-	}
 	
-	/**
-	 * Executa uma Query.
-	 * 
-	 * @param parameters {@link String}
-	 * @return {@link Query}
-	 */
-	public Query executeJPQL(String jpql){
-		return entityManager.createQuery(jpql);
-	}
 	
 	/**
 	 * Executa uma Criteria simples, retornando um objeto TypedQuery<T>
@@ -153,33 +122,19 @@ public class DataAccess<T> {
 	}
 	
 	
-	/**
-	 * Executa uma Criteria simples, retornando um objeto TypedQuery<T>
-	 * para tratar o select.
-	 * 
-	 * @param parameters {@link Class}
-	 * @return {@link CriteriaQuery}
-	 */
-	public CriteriaQuery<T> getCriteriaQuery(Class<T> clazz){
-		
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> cq = cb.createQuery(clazz);
-		Root<T> select = cq.from(clazz);
-		return cq.select(select);
-	}
-
+	
 	/**
 	 * Faz insert em um objeto passando-se a instancia dele
 	 */
 	@Transactional
-	public void insert() throws Exception {
+	public void persist(T entity) throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
 		
 		if (!transaction.isActive()) 
 			entityManager.getTransaction().begin();
 			
-		entityManager.persist(this);
+		entityManager.persist(entity);
 		transaction.commit();
 	}
 
@@ -187,13 +142,13 @@ public class DataAccess<T> {
 	 * Faz delete de um objeto passando-se a instancia dele
 	 */
 	@Transactional
-	public void delete() throws Exception {
+	public void remove(T entity) throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
 		if (!transaction.isActive()) 
 			entityManager.getTransaction().begin(); 
 			
-		DataAccess<T> obj = entityManager.merge(this);
+		T obj = entityManager.merge(entity);
 		entityManager.remove(obj);
 		transaction.commit();
 	}
@@ -203,14 +158,23 @@ public class DataAccess<T> {
 	 * @param obj
 	 */
 	@Transactional
-	public void update() throws Exception {
+	public void merge(T entity) throws Exception {
 		
 		EntityTransaction transaction = entityManager.getTransaction();
 		if (!transaction.isActive()) 
 			entityManager.getTransaction().begin();
 		
-		DataAccess<T> obj = entityManager.merge(this);
-		entityManager.merge(obj);
+		entityManager.merge(entity);
 		transaction.commit(); 
+	}
+	
+	/**
+	 * Obtem uma lista de elementos passando determinada classe.
+	 * @param clazz
+	 * @return 
+	 */
+	public List<T> getAll(Class<T> clazz){
+		TypedQuery<T> criteria = this.executeCriteria(clazz);
+		return criteria.getResultList();
 	}
 }

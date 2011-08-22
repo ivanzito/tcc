@@ -17,12 +17,10 @@ import javax.persistence.TemporalType;
 
 import org.springframework.stereotype.Repository;
 
-import edu.fatec.zl.dao.DataAccess;
-
 @Entity
 @Repository
 @NamedQuery(name="login",query="SELECT login FROM Login login WHERE login.usuario= :usr AND login.senha= :pwd")
-public class Login extends DataAccess<Login> implements Serializable {
+public class Login implements Serializable,Persistable {
 
 	/**
 	 * 
@@ -34,10 +32,8 @@ public class Login extends DataAccess<Login> implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SQ")
 	private Long id; 
 	
-	/*@Column
-	private String ativo;*/
 	
-	@Column(nullable=false)
+	@Column(nullable=false,unique=true)
 	private String usuario;
 	
 	@Column(nullable=false)
@@ -46,7 +42,6 @@ public class Login extends DataAccess<Login> implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataModificacao;
 	
-	/*private Long tipoAtivo;*/
 	
 	@OneToOne
 	@JoinColumn

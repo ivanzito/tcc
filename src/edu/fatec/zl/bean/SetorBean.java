@@ -12,11 +12,12 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.entity.Setor;
+import edu.fatec.zl.service.SetorService;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class SetorBean extends AbstractBean {
+public class SetorBean extends GenericBean {
 
 	/**
 	 * 
@@ -29,13 +30,13 @@ public class SetorBean extends AbstractBean {
 
 	
 	@Inject
-	private Setor setor;
+	private SetorService setorService;
 	
 
 	
 	@PostConstruct
 	public void load(){
-		listSetor = setor.getSetorList();
+		listSetor = setorService.getAll();
 		
 		listSetor.add(0,new Setor());
 	}
@@ -50,8 +51,8 @@ public class SetorBean extends AbstractBean {
 		}
 		
 		try {
-			selected.insert();
-			listSetor = selected.getSetorList();
+			setorService.persist(selected);
+			listSetor = setorService.getAll();
 			listSetor.add(0,new Setor());
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
@@ -68,7 +69,7 @@ public class SetorBean extends AbstractBean {
 		}
 		
 		try {
-			selected.update();
+			setorService.merge(selected);
 		} catch (Exception e) {
 			ctx.addMessage(null, new FacesMessage(e.getMessage()));
 		}
@@ -84,8 +85,8 @@ public class SetorBean extends AbstractBean {
 		}
 		
 		try {
-			selected.delete();
-			listSetor = setor.getSetorList();
+			setorService.remove(selected);
+			listSetor = setorService.getAll();
 			listSetor.add(0,new Setor());
 		} catch (Exception e) {
 			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
@@ -110,11 +111,11 @@ public class SetorBean extends AbstractBean {
 		this.selected = selected;
 	}
 
-	public Setor getSetor() {
-		return setor;
+	public SetorService getSetorService() {
+		return setorService;
 	}
 
-	public void setSetor(Setor setor) {
-		this.setor = setor;
+	public void setSetorService(SetorService setorService) {
+		this.setorService = setorService;
 	}
 }

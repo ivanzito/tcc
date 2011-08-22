@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import edu.fatec.zl.entity.Ativo;
@@ -12,90 +11,40 @@ import edu.fatec.zl.entity.Funcionario;
 import edu.fatec.zl.entity.Login;
 import edu.fatec.zl.entity.Setor;
 import edu.fatec.zl.entity.TipoAtivo;
+import edu.fatec.zl.service.AtivoService;
+import edu.fatec.zl.service.FuncionarioService;
+import edu.fatec.zl.service.SetorService;
+import edu.fatec.zl.service.TipoAtivoService;
+import edu.fatec.zl.service.UserService;
 
 public class DataAccessTest {
-
-
-	@Before
-	public void createTables(){
-		//DataAccess.getEntityManager();		
-	}
 	
-/*	@Test 
-	public void createMassOfTest()throws Exception{
-
-		
-		Setor setor = new Setor();
-		setor.setDataModificacao(new Date());
-		setor.setName("Desenvolvimento");
-		setor.insert();
-
-		TipoAtivo tpAtivo = new TipoAtivo();
-		tpAtivo.setDataModificacao(new Date());
-		tpAtivo.setDepreciacao(0.02);
-		tpAtivo.setName("computador");
-		tpAtivo.insert();
-		
-		List<Ativo> set = new LinkedList<Ativo>();
-		Ativo ativo = new Ativo();
-		ativo.setAtivo("pc");
-		ativo.setDataModificacao(new Date());
-		ativo.setTipoAtivo(tpAtivo);
-		ativo.insert();
-		set.add(ativo);
-		
-		ativo = new Ativo();
-		ativo.setAtivo("laptop");
-		ativo.setDataModificacao(new Date());
-		ativo.setTipoAtivo(tpAtivo);
-		ativo.insert();
-		set.add(ativo);
-		
-		Funcionario funcionario = new Funcionario();
-		funcionario.setNome("Ivan");
-		funcionario.setDataModificacao(new Date());
-		funcionario.setSetor(setor);
-		funcionario.setListAtivo(set);
-		funcionario.insert();
-		
-		
-		Login login = new Login();
-		login.setUsuario("ivan");
-		login.setSenha("ivan");
-		login.setFuncionario(funcionario);
-		login.setDataModificacao(new Date());
-		login.insert();
-		
-		login = DataAccess.getEntityManager().find(Login.class, 1l);
-
-		Assert.assertNotNull(login.getFuncionario().getSetor());
-		Assert.assertNotNull(login.getFuncionario());
-		Assert.assertNotNull(login.getUsuario()); 
-	    
-		funcionario = DataAccess.getEntityManager().find(Funcionario.class, 1l);
-		Assert.assertFalse(funcionario.getListAtivo().isEmpty());
-	}*/
 	
 	@Test 
 	public void createMassOfTest()throws Exception{
 
+		SetorService setorService = new SetorService();
+		TipoAtivoService tpAtivoService = new TipoAtivoService();
+		FuncionarioService funcionarioService = new FuncionarioService();
+		AtivoService ativoService = new AtivoService();
+		UserService loginService = new UserService();
 		
 		Setor setor = new Setor();
 		setor.setDataModificacao(new Date());
 		setor.setName("Desenvolvimento");
-		setor.insert();
+		setorService.persist(setor);
 
 		TipoAtivo tpAtivo = new TipoAtivo();
 		tpAtivo.setDataModificacao(new Date());
 		tpAtivo.setDepreciacao(0.02);
 		tpAtivo.setName("computador");
-		tpAtivo.insert();
+		tpAtivoService.persist(tpAtivo);
 
 		Funcionario funcionario = new Funcionario();
 		funcionario.setNome("Ivan");
 		funcionario.setDataModificacao(new Date());
 		funcionario.setSetor(setor);
-		funcionario.insert();
+		funcionarioService.persist(funcionario);
 		
 		List<Ativo> list = new LinkedList<Ativo>();
 		Ativo ativo = new Ativo();
@@ -103,7 +52,7 @@ public class DataAccessTest {
 		ativo.setDataModificacao(new Date());
 		ativo.setTipoAtivo(tpAtivo);
 		ativo.setFuncionario(funcionario);
-		ativo.insert();
+		ativoService.persist(ativo);
 		list.add(ativo);
 		
 		ativo = new Ativo();
@@ -111,7 +60,7 @@ public class DataAccessTest {
 		ativo.setDataModificacao(new Date());
 		ativo.setTipoAtivo(tpAtivo);
 		ativo.setFuncionario(funcionario);
-		ativo.insert();
+		ativoService.persist(ativo);
 		list.add(ativo);
 			
 		Login login = new Login();
@@ -119,6 +68,6 @@ public class DataAccessTest {
 		login.setSenha("ivan");
 		login.setFuncionario(funcionario);
 		login.setDataModificacao(new Date());
-		login.insert();	
+		loginService.persist(login);	
 	}
 }

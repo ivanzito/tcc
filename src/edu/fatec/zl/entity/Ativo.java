@@ -2,7 +2,6 @@ package edu.fatec.zl.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,16 +15,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
-
-import edu.fatec.zl.dao.DataAccess;
 
 @Entity
 @NamedQuery(name="ativoGraficoPizza",query="SELECT COUNT(a) FROM Ativo a WHERE a.tipoAtivo.id =:aux")
 @Repository
-public class Ativo extends DataAccess<Ativo> implements Serializable {
+public class Ativo implements Serializable,Persistable {
 
 	
 	public Ativo(){
@@ -55,19 +51,6 @@ public class Ativo extends DataAccess<Ativo> implements Serializable {
 	
 	@ManyToOne
     private Funcionario funcionario;
-
-	public List<Ativo> getAtivoList(){
-		
-		TypedQuery<Ativo> tqAtivo = null;
-		List<Ativo> listAtivo = null;
-		tqAtivo = new Ativo().executeCriteria(Ativo.class);
-		
-		if(tqAtivo.getMaxResults() > 0)
-			listAtivo = tqAtivo.getResultList();
-		
-		return listAtivo;
-	}
-	
 	
 	public Long getId() {
 		return id;

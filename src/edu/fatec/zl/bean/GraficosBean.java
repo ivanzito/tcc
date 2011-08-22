@@ -1,26 +1,24 @@
 package edu.fatec.zl.bean;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.dto.GraficoPizzaDTO;
-import edu.fatec.zl.entity.Ativo;
-import edu.fatec.zl.entity.Funcionario;
 import edu.fatec.zl.entity.Setor;
 import edu.fatec.zl.entity.TipoAtivo;
+import edu.fatec.zl.service.GraficoService;
+import edu.fatec.zl.service.SetorService;
+import edu.fatec.zl.service.TipoAtivoService;
 
 @ManagedBean
-@Controller
-public class GraficosBean extends AbstractBean {
+@Controller 
+public class GraficosBean extends GenericBean {
 	
 	
 	/**
@@ -31,39 +29,27 @@ public class GraficosBean extends AbstractBean {
 	private List<GraficoPizzaDTO> ativoTipoAtivo = new LinkedList<GraficoPizzaDTO>();
 	
 	@Inject
-	private Funcionario funcionario;
+	private TipoAtivoService tipoAtivoService;
 	
 	@Inject
-	private Ativo ativo;
+	private SetorService setorService;
 	
 	@Inject
-	private TipoAtivo tipoAtivo;
-	
-	@Inject
-	private Setor setor;
+	private GraficoService graficoService;
 	
 	@PostConstruct
 	public void load(){
 		
-		List<Setor> listSetor = setor.getSetorList();
+		List<Setor> listSetor = setorService.getAll();
 		for(Setor set : listSetor){
-			Map<String,Object> parameters = new HashMap<String,Object>();
-			parameters.put("aux", set.getId());
-			Query query = funcionario.executeNamedQuery("funcionarioGraficoPizza", parameters);
-			Long qtde = (Long) query.getSingleResult();
-			funcionarioSetor.add(new GraficoPizzaDTO(qtde,set.getName()));
+			funcionarioSetor.add(new GraficoPizzaDTO(graficoService.getFuncionario(set),set.getName()));
 		}
 		
-		
-		
-		List<TipoAtivo> listTipoAtivo = tipoAtivo.getTipoAtivoList();
+		List<TipoAtivo> listTipoAtivo = tipoAtivoService.getAll();
 		for(TipoAtivo tpAtivo : listTipoAtivo){
-			Map<String,Object> parameters = new HashMap<String,Object>();
-			parameters.put("aux", tpAtivo.getId());
-			Query query = ativo.executeNamedQuery("ativoGraficoPizza", parameters);
-			Long qtde = (Long) query.getSingleResult();
-			ativoTipoAtivo.add(new GraficoPizzaDTO(qtde,tpAtivo.getName()));
+			ativoTipoAtivo.add(new GraficoPizzaDTO(graficoService.getAtivo(tpAtivo),tpAtivo.getName()));
 		}
+		
 	}
 
 	public List<GraficoPizzaDTO> getFuncionarioSetor() {
@@ -82,35 +68,28 @@ public class GraficosBean extends AbstractBean {
 		this.ativoTipoAtivo = ativoTipoAtivo;
 	}
 
-	public Funcionario getFuncionario() {
-		return funcionario;
+
+	public TipoAtivoService getTipoAtivoService() {
+		return tipoAtivoService;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
+	public void setTipoAtivoService(TipoAtivoService tipoAtivoService) {
+		this.tipoAtivoService = tipoAtivoService;
 	}
 
-	public Ativo getAtivo() {
-		return ativo;
+	public SetorService getSetorService() {
+		return setorService;
 	}
 
-	public void setAtivo(Ativo ativo) {
-		this.ativo = ativo;
+	public void setSetorService(SetorService setorService) {
+		this.setorService = setorService;
 	}
 
-	public TipoAtivo getTipoAtivo() {
-		return tipoAtivo;
+	public GraficoService getGraficoService() {
+		return graficoService;
 	}
 
-	public void setTipoAtivo(TipoAtivo tipoAtivo) {
-		this.tipoAtivo = tipoAtivo;
-	}
-
-	public Setor getSetor() {
-		return setor;
-	}
-
-	public void setSetor(Setor setor) {
-		this.setor = setor;
+	public void setGraficoService(GraficoService graficoService) {
+		this.graficoService = graficoService;
 	}
 }

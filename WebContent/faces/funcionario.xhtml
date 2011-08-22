@@ -10,7 +10,8 @@
 		
 		<p:dataTable id="dataTable"
 			style="width:500px;text-align:center; align:center;width:900px;"
-			value="#{funcionarioBean.listFuncionario}" var="list"
+			value="#{funcionarioBean.listFuncionario}" 
+			var="list"
 			selectionMode="single" selection="#{funcionarioBean.selected}"
 			paginator="true" rows="5"
 			emptyMessage="#{bundle.no_records_found}">
@@ -19,32 +20,35 @@
              	<h:outputText value="#{bundle.employee}"/>  
          	</f:facet> 
 			
-			<p:column sortBy="#{list['nome']}" filterBy="#{list['nome']}">
+			<p:column sortBy="#{list[0]}" filterBy="#{list[0]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.name}" />
 				</f:facet>
-				<p:inputText id="nome" value="#{list['nome']}"  />
+				<p:inputText id="nome" value="#{list[0]}"  />
 				<p:watermark value="#{bundle.new_employee}" for="nome" />
 			</p:column>
 			
 			
-			<p:column sortBy="#{list['setor'].name}" filterBy="#{list['setor'].name}">
+			<p:column sortBy="#{list[1]}" filterBy="#{list[1]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.sector}" />
 				</f:facet>
 
-					<p:autoComplete forceSelection="true" value="#{list['setor'].name}"
+					<p:autoComplete forceSelection="true" value="#{list[1]}"
 						completeMethod="#{funcionarioBean.completeSetor}" />
 			</p:column>
 			
 			
 			
-			<p:column sortBy="#{list['dataModificacao']}" filterBy="#{list['dataModificacao']}">
+			<p:column sortBy="#{list[2]}" filterBy="#{list[2]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.date_modified}" />
 				</f:facet>
-				<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
+				<p:calendar value="#{list[2]}" pattern="dd/MM/yyyy" />
+				<h:inputHidden id="id" value="#{list[3]}"/>
 			</p:column>
+			
+			
 			
 		</p:dataTable>
 

@@ -6,13 +6,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import edu.fatec.zl.dao.DataAccess;
+import edu.fatec.zl.dao.GenericDao;
 
 @Aspect
 @Component
 public class LoggingInterceptor {
 
-	Logger logger = Logger.getLogger(DataAccess.class);
+	Logger logger = Logger.getLogger(GenericDao.class);
 
 	@Pointcut("execution(@org.springframework.transaction.annotation.Transactional * *(..) )")
 	public void transactionalMethod() {}

@@ -17,40 +17,39 @@
              	<h:outputText value="#{bundle.asset}"/>  
          	</f:facet>
 			
-			<p:column resizable="true" filterBy="#{list['ativo']}" sortBy="#{list['ativo']}">
+			<p:column resizable="true" filterBy="#{list[1]}" sortBy="#{list[1]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.asset}" />
 				</f:facet>
-				<p:inputText id="nome" value="#{list['ativo']}" />
+				<p:inputText id="nome" value="#{list[1]}" />
 				<p:watermark value="#{bundle.new_asset}" for="nome" />
 			</p:column>
 
-			<p:column resizable="true" sortBy="#{list['tipoAtivo']['name']}" filterBy="#{list['tipoAtivo']['name']}">
+			<p:column resizable="true" sortBy="#{list[2]}" filterBy="#{list[2]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.asset_type}" />
 				</f:facet>
-				<!--<p:inputText id="tipoAtivo" value="#{list['tipoAtivo']['name']}" />-->
-				<p:autoComplete forceSelection="true" value="#{list['tipoAtivo']['name']}"
+				<p:autoComplete forceSelection="true" value="#{list[2]}"
 					completeMethod="#{ativoBean.completeTipoAtivo}" />
 			</p:column>
 
 
-			<p:column resizable="true" sortBy="#{list['funcionario']['nome']}" filterBy="#{list['funcionario']['nome']}">
+			<p:column resizable="true" sortBy="#{list[3]}" filterBy="#{list[3]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.employee}" />
 				</f:facet>
-				<!--<p:inputText id="funcionario" value="#{list['funcionario']['nome']}" />-->
-				<p:autoComplete forceSelection="true" value="#{list['funcionario']['nome']}"
+				<p:autoComplete forceSelection="true" value="#{list[3]}"
 					completeMethod="#{ativoBean.completeFuncionario}" />
 			</p:column>
 
 
 
-			<p:column resizable="true" filterBy="#{list['dataModificacao']}">
+			<p:column resizable="true" filterBy="#{list[4]}">
 				<f:facet name="header">
 					<h:outputLabel value="#{bundle.date_modified}" />
 				</f:facet>
-				<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
+				<p:calendar value="#{list[4]}" pattern="dd/MM/yyyy" />
+				<h:inputHidden id="id" value="#{list[0]}"/>
 			</p:column>
 		</p:dataTable>
 		<p>

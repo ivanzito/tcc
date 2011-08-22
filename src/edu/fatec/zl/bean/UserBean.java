@@ -1,10 +1,8 @@
 package edu.fatec.zl.bean;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -21,12 +19,15 @@ import org.springframework.stereotype.Controller;
 import edu.fatec.zl.entity.Funcionario;
 import edu.fatec.zl.entity.Login;
 import edu.fatec.zl.entity.Setor;
+import edu.fatec.zl.service.FuncionarioService;
+import edu.fatec.zl.service.SetorService;
+import edu.fatec.zl.service.UserService;
 import edu.fatec.zl.util.CypherUtil;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class UserBean extends AbstractBean {
+public class UserBean extends GenericBean {
 
 	/**
 	 * 
@@ -42,44 +43,45 @@ public class UserBean extends AbstractBean {
 	private FacesUtil faces = new FacesUtil();
 	
 	@Inject
-	private CypherUtil cypher;
-	
-	@Inject
-	private Login login;
+	private UserService userService;
 	
 	@Inject 
-	private Setor setor;
+	private SetorService setorService;
 	
+	@Inject
+	private FuncionarioService funcionarioService;
+	
+	@Inject
+	private CypherUtil cypher;
 	
 	private Logger logger = Logger.getLogger(UserBean.class);
 	
 	
 	@PostConstruct
 	public void load(){
-		List<Setor>list = setor.getSetorList();
+		List<Setor>list = setorService.getAll();
 		for(Setor set : list)
 			selectSetor.add(new SelectItem(set.getId(),set.getName()));
 	}
 	
 	
 	public String doLogin() {
+
 		FacesUtil faces = new FacesUtil();
 		FacesContext ctx = faces.getFacesContext();
 		String forward = "home";
 		
 		password = cypher.cypherLogin(user,password);
 		
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("usr", user);
-		map.put("pwd", password);
-		
 		try{
-			login = (Login) login.executeNamedQuery("login", map).getSingleResult();
+		
+			userService.doLogin(user,password); 
 		
 		} catch(NoResultException e){
 			logger.error(e.getMessage());
 			ctx.addMessage(null,new FacesMessage(super.getBundle().getString("user_or_password_wrong")));
 			forward = "erro";			
+		
 		} finally{
 			user = "";
 			password = "";
@@ -95,20 +97,20 @@ public class UserBean extends AbstractBean {
 		
 		try {
 			
-			Setor set = setor.getEntityManager().find(Setor.class, setorSelected);  
+			Setor set = setorService.getSetor(setorSelected);  
 		
 			Funcionario funcionario = new Funcionario();
 			funcionario.setSetor(set);
 			funcionario.setNome(name);
 			funcionario.setDataModificacao(new Date());
-			funcionario.insert();
+			funcionarioService.persist(funcionario);
 			
 			Login login = new Login();
 			login.setUsuario(user);
 			login.setSenha(password);
 			login.setDataModificacao(new Date());
 			login.setFuncionario(funcionario);
-			login.insert();
+			userService.persist(login);
 			
 			ctx.addMessage(null, new FacesMessage(super.getBundle().getString("login_created")));
 			
@@ -140,14 +142,6 @@ public class UserBean extends AbstractBean {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public Login getLogin() {
-		return login;
-	}
-
-	public void setLogin(Login login) {
-		this.login = login;
-	}
 
 	public String getName() {
 		return name;
@@ -159,23 +153,11 @@ public class UserBean extends AbstractBean {
 
 	public List<SelectItem> getSelectSetor() {
 		selectSetor = new LinkedList<SelectItem>();
-		List<Setor>list = setor.getSetorList();
+		List<Setor>list = setorService.getAll();
 		for(Setor set : list)
 			selectSetor.add(new SelectItem(set.getId(),set.getName()));
 	
 		return selectSetor;
-	}
-
-	public void setSelectSetor(List<SelectItem> selectSetor) {
-		this.selectSetor = selectSetor;
-	}
-
-	public Setor getSetor() {
-		return setor;
-	}
-
-	public void setSetor(Setor setor) {
-		this.setor = setor;
 	}
 
 
@@ -186,6 +168,41 @@ public class UserBean extends AbstractBean {
 
 	public void setSetorSelected(Long setorSelected) {
 		this.setorSelected = setorSelected;
+	}
+
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+
+	public SetorService getSetorService() {
+		return setorService;
+	}
+
+
+	public void setSetorService(SetorService setorService) {
+		this.setorService = setorService;
+	}
+
+
+	public FuncionarioService getFuncionarioService() {
+		return funcionarioService;
+	}
+
+
+	public void setFuncionarioService(FuncionarioService funcionarioService) {
+		this.funcionarioService = funcionarioService;
+	}
+
+
+	public void setSelectSetor(List<SelectItem> selectSetor) {
+		this.selectSetor = selectSetor;
 	}
 
 

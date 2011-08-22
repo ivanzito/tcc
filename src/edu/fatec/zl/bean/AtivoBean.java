@@ -1,9 +1,8 @@
 package edu.fatec.zl.bean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -11,49 +10,45 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Controller;
 
 import edu.fatec.zl.entity.Ativo;
 import edu.fatec.zl.entity.Funcionario;
-import edu.fatec.zl.entity.Setor;
 import edu.fatec.zl.entity.TipoAtivo;
+import edu.fatec.zl.service.AtivoService;
+import edu.fatec.zl.service.FuncionarioService;
+import edu.fatec.zl.service.TipoAtivoService;
 import edu.fatec.zl.util.FacesUtil;
 
 @ManagedBean
 @Controller
-public class AtivoBean extends AbstractBean {
-	
-	
+public class AtivoBean extends GenericBean {
+		
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private FacesUtil faces = new FacesUtil();
-	private List<Ativo> listAtivo = null;
+	private List<Object[]> listAtivo = null;
 
 	
-	private Ativo selected = null;
+	private Object[] selected = null;
 	
 	@Inject
-	private Ativo ativo;
+	private AtivoService ativoService;
 	
 	@Inject
-	private Funcionario funcionario;
+	private FuncionarioService funcionarioService;
 	
 	@Inject
-	private TipoAtivo tipoAtivo;
+	private TipoAtivoService tipoAtivoService;
 	
-	@Inject
-	private Setor setor;
-	
-
 
 	@PostConstruct
 	public void load(){
-		listAtivo = ativo.getAtivoList();
-		listAtivo.add(0,new Ativo());
+		listAtivo = ativoService.getAtivos();
+		listAtivo.add(0,new Object[5]);
 	}
 	
 	public void add(ActionEvent evt) {
@@ -66,23 +61,18 @@ public class AtivoBean extends AbstractBean {
 		}
 		
 		try{
+			Ativo ativo = new Ativo();
+			ativo.setAtivo(selected[1].toString());
+			TipoAtivo tipoAtivo = tipoAtivoService.getTipoAtivoByName(selected[2].toString());
+			Funcionario funcionario = funcionarioService.getFuncionarioByName(selected[3].toString());
+			ativo.setDataModificacao((Date) selected[4]);
 			
-			Map<String,Object> parameters = new HashMap<String,Object>();
-			parameters.put("aux", selected.getFuncionario().getNome());
-			Query query = funcionario.executeNamedQuery("funcionarioPorNome", parameters);
-			funcionario = (Funcionario) query.getSingleResult();
+			ativo.setFuncionario(funcionario);
+			ativo.setTipoAtivo(tipoAtivo);
+			ativoService.persist(ativo);
 			
-			parameters.clear();
-			parameters.put("aux", selected.getTipoAtivo().getName());
-			query = setor.executeNamedQuery("tipoAtivoPorNome", parameters);
-			tipoAtivo = (TipoAtivo) query.getSingleResult();			
-			
-			selected.setFuncionario(funcionario);
-			selected.setTipoAtivo(tipoAtivo);
-			selected.insert();
-			
-			listAtivo = selected.getAtivoList();
-			listAtivo.add(0,new Ativo());
+			listAtivo = ativoService.getAtivos();
+			listAtivo.add(0,new Object[5]);
 			
 		} catch(Exception e){
 			faces.getFacesContext().
@@ -99,8 +89,16 @@ public class AtivoBean extends AbstractBean {
 			return;
 		}
 		
+		Ativo ativo = ativoService.getAtivo(Long.parseLong(selected[0].toString()));
+		ativo.setAtivo(selected[1].toString());
+		TipoAtivo tipoAtivo = tipoAtivoService.getTipoAtivoByName(selected[2].toString());
+		Funcionario funcionario = funcionarioService.getFuncionarioByName(selected[3].toString());
+		ativo.setDataModificacao((Date) selected[4]);
+		ativo.setTipoAtivo(tipoAtivo);
+		ativo.setFuncionario(funcionario);
+		
 		try {
-			selected.update();
+			ativoService.merge(ativo);
 		}catch(Exception e){
 			faces.getFacesContext().addMessage(null, new FacesMessage(e.getMessage()));			
 		}
@@ -115,21 +113,23 @@ public class AtivoBean extends AbstractBean {
 			return;
 		}
 		
+		Ativo ativo = ativoService.getAtivo(Long.parseLong(selected[0].toString()));
+		
 		try{
-			selected.delete();
+			ativoService.remove(ativo);
 		}catch(Exception e){
 			faces.getFacesContext().addMessage(null, new FacesMessage(super.getBundle().getString("referencial_integrity")));
 		}
-		listAtivo = ativo.getAtivoList();
-		listAtivo.add(0,new Ativo());
+		listAtivo = ativoService.getAtivos();
+		listAtivo.add(0,new Object[5]);
 	}
 	
 
 	public List<String> completeTipoAtivo(String query) {
 		List<String> results = new ArrayList<String>();
 
-		for (TipoAtivo tpAtivo : tipoAtivo.getTipoAtivoList()) {
-			if (tpAtivo.getName().startsWith(query))
+		for (TipoAtivo tpAtivo : tipoAtivoService.getAll()) {
+			if (tpAtivo.getName().toLowerCase().startsWith(query.toLowerCase()))
 				results.add(tpAtivo.getName());
 		}
 
@@ -140,8 +140,8 @@ public class AtivoBean extends AbstractBean {
 	public List<String> completeFuncionario(String query) {
 		List<String> results = new ArrayList<String>();
 
-		for (Funcionario func : funcionario.getFuncionarioList()) {
-			if (func.getNome().startsWith(query))
+		for (Funcionario func : funcionarioService.getAll()) {
+			if (func.getNome().toLowerCase().startsWith(query.toLowerCase()))
 				results.add(func.getNome());
 		}
 
@@ -150,51 +150,43 @@ public class AtivoBean extends AbstractBean {
 	
 	// GETTERS AND SETTERS 
 
-	public List<Ativo> getListAtivo() {
+	public List<Object[]> getListAtivo() {
 		return listAtivo;
 	}
 
-	public void setListAtivo(List<Ativo> listAtivo) {
+	public void setListAtivo(List<Object[]> listAtivo) {
 		this.listAtivo = listAtivo;
 	}
 
-	public Ativo getSelected() {
+	public Object[] getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Ativo selected) {
+	public void setSelected(Object[] selected) {
 		this.selected = selected;
 	}
 
-	public Ativo getAtivo() {
-		return ativo;
+	public AtivoService getAtivoService() {
+		return ativoService;
 	}
 
-	public void setAtivo(Ativo ativo) {
-		this.ativo = ativo;
+	public void setAtivoService(AtivoService ativoService) {
+		this.ativoService = ativoService;
 	}
 
-	public Funcionario getFuncionario() {
-		return funcionario;
+	public FuncionarioService getFuncionarioService() {
+		return funcionarioService;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
+	public void setFuncionarioService(FuncionarioService funcionarioService) {
+		this.funcionarioService = funcionarioService;
 	}
 
-	public TipoAtivo getTipoAtivo() {
-		return tipoAtivo;
+	public TipoAtivoService getTipoAtivoService() {
+		return tipoAtivoService;
 	}
 
-	public void setTipoAtivo(TipoAtivo tipoAtivo) {
-		this.tipoAtivo = tipoAtivo;
-	}
-
-	public Setor getSetor() {
-		return setor;
-	}
-
-	public void setSetor(Setor setor) {
-		this.setor = setor;
+	public void setTipoAtivoService(TipoAtivoService tipoAtivoService) {
+		this.tipoAtivoService = tipoAtivoService;
 	}
 }

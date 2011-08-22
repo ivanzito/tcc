@@ -2,7 +2,6 @@ package edu.fatec.zl.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,16 +12,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
-
-import edu.fatec.zl.dao.DataAccess;
 
 @Entity
 @NamedQuery(name="tipoAtivoPorNome",query="SELECT ta FROM TipoAtivo ta WHERE ta.name =:aux")
 @Repository
-public class TipoAtivo extends DataAccess<TipoAtivo> implements Serializable {
+public class TipoAtivo implements Serializable,Persistable {
 
 	/**
 	 * 
@@ -34,7 +30,7 @@ public class TipoAtivo extends DataAccess<TipoAtivo> implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="SQ")
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column(nullable=false,unique=true)
 	private String name;
 	
 	@Column(nullable=false)
@@ -44,18 +40,6 @@ public class TipoAtivo extends DataAccess<TipoAtivo> implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataModificacao;
 
-
-	public List<TipoAtivo> getTipoAtivoList(){
-		
-		TypedQuery<TipoAtivo> tqTpAtivo = null;
-		List<TipoAtivo> listTpAtivo = null;
-		tqTpAtivo = new TipoAtivo().executeCriteria(TipoAtivo.class);
-		
-		if(tqTpAtivo.getMaxResults() > 0)
-			listTpAtivo = tqTpAtivo.getResultList();
-		
-		return listTpAtivo;
-	}
 	
 	
 	public Long getId() {

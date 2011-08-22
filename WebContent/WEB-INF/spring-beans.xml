@@ -17,9 +17,9 @@ http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 	<context:annotation-config />
 	<aop:aspectj-autoproxy/>
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
-	<context:component-scan base-package="edu.fatec.zl.entity" />
-  	<context:component-scan base-package="edu.fatec.zl.dao" />
-	<context:component-scan base-package="edu.fatec.zl.bean" />
+  	<context:component-scan base-package="edu.fatec.zl.dao" />  	
+  	<context:component-scan base-package="edu.fatec.zl.service" />
+  	<context:component-scan base-package="edu.fatec.zl.bean" />
 	<context:component-scan base-package="edu.fatec.zl.aspect" />
 	<context:component-scan base-package="edu.fatec.zl.util" />
 
