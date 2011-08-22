@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -27,32 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class GenericDao<T> {
 	
-	
-	private EntityManager entityManager = null;
-	
-	public static final String PERSISTENCE_UNIT = "tcc";
-	
-	
-	/**
-	* Retorna um objeto do tipo EntityManager. Este e usado para fazer acesso
-	* aos dados.
-	*
-	* @return {@link EntityManager}
-	*/
-	public EntityManager getEntityManager() {
-		return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT).createEntityManager();
-	}
-
-	/**
-	* Retorna um objeto do tipo EntityManager. Este e usado para fazer acesso
-	* aos dados.
-	*
-	* @return {@link EntityManager}
-	* @param {@link String}
-	*/
-	public EntityManager getEntityManager(String persistenceUnit) {
-		return Persistence.createEntityManagerFactory(persistenceUnit).createEntityManager();
-	}
+	@PersistenceContext(unitName="tcc")
+	private EntityManager entityManager;
 	
 	/**
 	 * Construtor Default
@@ -128,14 +103,7 @@ public class GenericDao<T> {
 	 */
 	@Transactional
 	public void persist(T entity) throws Exception {
-		
-		EntityTransaction transaction = entityManager.getTransaction();
-		
-		if (!transaction.isActive()) 
-			entityManager.getTransaction().begin();
-			
 		entityManager.persist(entity);
-		transaction.commit();
 	}
 
 	/**
@@ -143,14 +111,8 @@ public class GenericDao<T> {
 	 */
 	@Transactional
 	public void remove(T entity) throws Exception {
-		
-		EntityTransaction transaction = entityManager.getTransaction();
-		if (!transaction.isActive()) 
-			entityManager.getTransaction().begin(); 
-			
 		T obj = entityManager.merge(entity);
 		entityManager.remove(obj);
-		transaction.commit();
 	}
 
 	/**
@@ -159,13 +121,7 @@ public class GenericDao<T> {
 	 */
 	@Transactional
 	public void merge(T entity) throws Exception {
-		
-		EntityTransaction transaction = entityManager.getTransaction();
-		if (!transaction.isActive()) 
-			entityManager.getTransaction().begin();
-		
 		entityManager.merge(entity);
-		transaction.commit(); 
 	}
 	
 	/**
@@ -176,5 +132,15 @@ public class GenericDao<T> {
 	public List<T> getAll(Class<T> clazz){
 		TypedQuery<T> criteria = this.executeCriteria(clazz);
 		return criteria.getResultList();
+	}
+
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 }
