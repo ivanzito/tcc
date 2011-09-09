@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+	<f:view>
+	
+	<script type="text/javascript">  
+		var chartStyle = {  
+			padding:20,  
+			legend: {  
+				display:"right",  
+				spacing:10  
+			}  
+		};  
+	</script>
+			<h:form>
+				<p:panel header="#{bundle.charts}">
+					
+					
+					<h:panelGrid columns="2">
+					
+						<h:column>
+								<h:outputLabel value="#{bundle.chart_left}"/>
+								<p:pieChart width="400px" value="#{graficosBean.funcionarioSetor}" 
+								var="pie" categoryField="#{pie.key}"
+								dataField="#{pie.value}" style="chartStyle"/>
+						</h:column>
+						
+						<h:column>
+								<h:outputLabel value="#{bundle.chart_right}"/>
+								<p:pieChart width="400px" value="#{graficosBean.ativoTipoAtivo}" 
+								var="pie" categoryField="#{pie.key}"
+								dataField="#{pie.value}" style="chartStyle"/>
+
+						</h:column>
+					</h:panelGrid>
+	
+				</p:panel>
+			</h:form>
+	</f:view>
+</html>

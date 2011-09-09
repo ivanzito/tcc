@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jsp:root version="2.0" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:triad-ui="http://www.transformers.com.br/jsf12/ui-components"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	<html>
+	
+	<h:head>
+		<title><h:outputText value="Controle de Ativos" /></title>
+	</h:head>
+
+	<h:body>
+
+		<p:ajaxStatus style="width:16px;height:0px;">  
+     		<f:facet name="start">  
+         		<h:graphicImage value="../images/ajax-loading.gif" />  
+     		</f:facet>
+			<f:facet name="complete">  
+         		<h:outputText value="" />  
+     		</f:facet> 
+     	</p:ajaxStatus>
+     	
+     	<div style="position:relative;left:90%; height:250px;">
+     		<h:form>
+	     		<span>
+	     			<h:commandLink action="#{genericBean.changeLanguage('en')}">
+	     				<h:graphicImage style="border:0px;" title="#{bundle.english}" value="../images/eua.jpg" />
+	     			</h:commandLink>
+	     		</span>
+	     		<span>
+	     			<h:commandLink action="#{genericBean.changeLanguage('pt')}">
+	     				<h:graphicImage style="border:0px;" title="#{bundle.portuguese}" value="../images/brasil.jpg" />
+	     			</h:commandLink>
+	     		</span>
+     		</h:form>
+     	</div>
+
+			<div id="top">
+				<ui:insert name="top"/>
+			</div>
+			<div id="center" style="width:400px;position:relative;left:30%;top:30%;">
+				<ui:insert name="center"/>
+			</div>
+			<div id="bottom">
+				<ui:insert name="bottom"/>						
+			</div>
+
+	</h:body>
+
+	</html>
+</jsp:root>

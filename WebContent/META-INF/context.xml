@@ -1,0 +1,6 @@
+<Context docBase="Inventario" path="/Inventario" reloadable="true">
+	<Loader
+		loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader"
+		useSystemClassLoaderAsParent="false" />
+
+</Context>

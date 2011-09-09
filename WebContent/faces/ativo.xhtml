@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+	<p:messages showSummary="true" id="msgAtivo" />
+	<h:form>
+		<p:dataTable id="dataTable"
+			style="width:500px;text-align:center; align:center;;width:900px;"
+			value="#{ativoBean.listAtivo}" var="list" selectionMode="single"
+			selection="#{ativoBean.selected}"
+			paginator="true" rows="5"
+			emptyMessage="#{bundle.no_records_found}">
+			
+			<f:facet name="header">  
+             	<h:outputText value="#{bundle.asset}"/>  
+         	</f:facet>
+			
+			<p:column resizable="true" filterBy="#{list[1]}" sortBy="#{list[1]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.asset}" />
+				</f:facet>
+				<p:inputText id="nome" value="#{list[1]}" />
+				<p:watermark value="#{bundle.new_asset}" for="nome" />
+			</p:column>
+
+			<p:column resizable="true" sortBy="#{list[2]}" filterBy="#{list[2]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.asset_type}" />
+				</f:facet>
+				<p:autoComplete forceSelection="true" value="#{list[2]}"
+					completeMethod="#{ativoBean.completeTipoAtivo}" />
+			</p:column>
+
+
+			<p:column resizable="true" sortBy="#{list[3]}" filterBy="#{list[3]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.employee}" />
+				</f:facet>
+				<p:autoComplete forceSelection="true" value="#{list[3]}"
+					completeMethod="#{ativoBean.completeFuncionario}" />
+			</p:column>
+
+
+
+			<p:column resizable="true" filterBy="#{list[4]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.date_modified}" />
+				</f:facet>
+				<p:calendar value="#{list[4]}" pattern="dd/MM/yyyy" />
+				<h:inputHidden id="id" value="#{list[0]}"/>
+			</p:column>
+		</p:dataTable>
+		<p>
+			<p:commandButton value="#{bundle.insert}" actionListener="#{ativoBean.add}"
+				 update="dataTable,msgAtivo" image="ui-icon ui-icon-disk" />
+	
+			<p:commandButton value="#{bundle.update}" image="ui-icon ui-icon-pencil"
+				update="dataTable,msgAtivo" actionListener="#{ativoBean.update}"  />
+	
+			<p:commandButton value="#{bundle.delete}" image="ui-icon ui-icon-trash"
+				update="dataTable,msgAtivo" actionListener="#{ativoBean.delete}" />
+
+		</p>
+	</h:form>
+
+</f:view>
+</html>

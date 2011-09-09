@@ -1,0 +1,46 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+	<ui:composition template="/faces/template.xhtml">
+
+		<ui:define name="top">
+
+		</ui:define>
+
+		<ui:define name="center">
+				<p:tabView id="tabView" effect="opacity">
+					<p:tab title="#{bundle.tab_asset}">
+						<ui:include src="/faces/ativo.xhtml"/>
+					</p:tab>
+					
+					<p:tab title="#{bundle.tab_employee}" >
+						<ui:include src="/faces/funcionario.xhtml"/>
+					</p:tab>
+					
+					<p:tab title="#{bundle.tab_sector}" >
+						<ui:include src="/faces/setor.xhtml"/>
+					</p:tab>
+					
+					<p:tab title="#{bundle.tab_asset_type}" >
+						<ui:include src="/faces/tipo_ativo.xhtml"/>
+					</p:tab>
+					
+					 
+					<p:tab title="#{bundle.tab_charts}" >
+						<ui:include src="/faces/graficos.xhtml"/>
+					</p:tab>
+					 											
+				</p:tabView>
+		</ui:define>
+
+		<ui:define name="bottom">
+
+		</ui:define>
+
+	</ui:composition>
+</f:view>
+</html>

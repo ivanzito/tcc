@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+	<p:messages showSummary="true" id="msgSetor" />
+	<h:form>
+		<p:layoutUnit position="center">
+			<p:dataTable id="dataTable"
+				style="width:500px;text-align:center; align:center;;width:900px;"
+				value="#{setorBean.listSetor}" var="list" selectionMode="single"
+				selection="#{setorBean.selected}"
+				paginator="true" rows="5"
+				emptyMessage="#{bundle.no_records_found}">
+				
+			<f:facet name="header">  
+             	<h:outputText value="#{bundle.sector}"/>  
+         	</f:facet>
+				
+				<p:column filterBy="#{list['name']}" sortBy="#{list['name']}">
+					<f:facet name="header">
+						<h:outputLabel value="#{bundle.sector}" />
+					</f:facet>
+					<p:inputText id="setor" value="#{list['name']}" />
+					<p:watermark value="#{bundle.new_sector}" for="setor" />
+				</p:column>
+
+
+				<p:column filterBy="#{list['dataModificacao']}" sortBy="#{list['dataModificacao']}">
+					<f:facet name="header">
+						<h:outputLabel value="#{bundle.date_modified}" />
+					</f:facet>
+					<p:calendar value="#{list['dataModificacao']}" pattern="dd/MM/yyyy" />
+				</p:column>
+			</p:dataTable>
+
+
+		<p>	
+			<p:commandButton value="#{bundle.insert}" actionListener="#{setorBean.add}"
+				 update="dataTable,msgSetor" image="ui-icon ui-icon-disk" />
+	
+			<p:commandButton value="#{bundle.update}" image="ui-icon ui-icon-pencil"
+				update="dataTable,msgSetor" actionListener="#{setorBean.update}"  />
+	
+			<p:commandButton value="#{bundle.delete}" image="ui-icon ui-icon-trash"
+				update="dataTable,msgSetor" actionListener="#{setorBean.delete}" />
+		</p>
+		</p:layoutUnit>
+	</h:form>
+</f:view>
+</html>

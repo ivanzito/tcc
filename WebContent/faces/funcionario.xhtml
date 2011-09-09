@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view>
+	<p:messages showSummary="true" id="msgFunc" />
+	<h:form>
+		
+		<p:dataTable id="dataTable"
+			style="width:500px;text-align:center; align:center;width:900px;"
+			value="#{funcionarioBean.listFuncionario}" 
+			var="list"
+			selectionMode="single" selection="#{funcionarioBean.selected}"
+			paginator="true" rows="5"
+			emptyMessage="#{bundle.no_records_found}">
+			
+			<f:facet name="header">  
+             	<h:outputText value="#{bundle.employee}"/>  
+         	</f:facet> 
+			
+			<p:column sortBy="#{list[0]}" filterBy="#{list[0]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.name}" />
+				</f:facet>
+				<p:inputText id="nome" value="#{list[0]}"  />
+				<p:watermark value="#{bundle.new_employee}" for="nome" />
+			</p:column>
+			
+			
+			<p:column sortBy="#{list[1]}" filterBy="#{list[1]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.sector}" />
+				</f:facet>
+
+					<p:autoComplete forceSelection="true" value="#{list[1]}"
+						completeMethod="#{funcionarioBean.completeSetor}" />
+			</p:column>
+			
+			
+			
+			<p:column sortBy="#{list[2]}" filterBy="#{list[2]}">
+				<f:facet name="header">
+					<h:outputLabel value="#{bundle.date_modified}" />
+				</f:facet>
+				<p:calendar value="#{list[2]}" pattern="dd/MM/yyyy" />
+				<h:inputHidden id="id" value="#{list[3]}"/>
+			</p:column>
+			
+			
+			
+		</p:dataTable>
+
+		<p>
+			<p:commandButton value="#{bundle.insert}" actionListener="#{funcionarioBean.add}"
+				 update="dataTable,msgFunc" image="ui-icon ui-icon-disk" />
+	
+			<p:commandButton value="#{bundle.update}" image="ui-icon ui-icon-pencil"
+				update="dataTable,msgFunc" actionListener="#{funcionarioBean.update}"  />
+	
+			<p:commandButton value="#{bundle.delete}" image="ui-icon ui-icon-trash"
+				update="dataTable,msgFunc" actionListener="#{funcionarioBean.delete}" />
+		</p>
+	</h:form>
+</f:view>
+</html>
